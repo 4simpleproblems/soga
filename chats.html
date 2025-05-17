@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOGA | Chats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #0f0f0f;
+      --text-color: #101827;
+      --bg-color: #f5f3ef;
+      --secondary-bg: #e9e5dc;
+      --accent-color: #ff7500;
+      --button-bg: #1a1a1a;
+      --orange-accent: #ff7500;
+      --sidebar-width: 240px;
+      --header-height: calc(1.5rem * 2 + 30px); /* Approx. padding + logo height */
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background-color:var(--bg-color);
+      color:var(--text-color);
+      line-height:1.6;
+      background-image:url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
+      background-attachment:fixed;
+      min-height: 100vh;
+      display: flex; /* Use flexbox on body to align sidebar and main content area */
+    }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+
+    header { padding:1.5rem 0; background-color:var(--bg-color); flex-shrink: 0; }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; }
+    .logo img { height:30px; }
+    .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
+
+    .nav-links { display:flex; gap:2rem; }
+    .nav-links a {
+      text-decoration:none; color:var(--text-color);
+      font-weight:500; font-size:0.9rem; letter-spacing:0.5px;
+      text-transform:uppercase; padding:8px 12px; border-radius:6px;
+      transition:all .3s ease;
+    }
+    .nav-links a:hover {
+      background-color:rgba(255,117,0,0.1);
+      color:var(--orange-accent);
+      transform:translateY(-2px);
+    }
+
+    .auth-buttons { display:flex; gap:1rem; }
+    .button {
+      display:inline-flex; align-items:center; justify-content:center;
+      background-color:var(--button-bg); color:white;
+      padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
+      text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
+    }
+     .button.logout {
+         background-color: var(--primary-color);
+         color: white;
+     }
+     .button.logout:hover {
+         background-color: #333;
+     }
+    .button:hover {
+      transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    }
+    .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
+    .button:hover .arrow:first-child { transform:translateX(-3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
+
+    /* Main Content Area - pushed by the fixed sidebar */
+    .main-content-area {
+        flex-grow: 1; /* Allow this area to take the remaining width */
+        margin-left: var(--sidebar-width); /* Push content to the right of the fixed sidebar */
+        display: flex; /* Use flexbox for header, content, footer within this area */
+        flex-direction: column;
+        min-height: 100vh; /* Ensure it takes at least full viewport height */
+         /* Add padding to this area */
+        padding: 0 2rem;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--secondary-bg);
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      height: 100vh;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      overflow-y: auto;
+      padding-top: var(--header-height); /* Add space at the top for the header */
+    }
+
+    .sidebar-nav {
+        padding: 2rem 0;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 10px 0.5rem 10px 3rem; /* Adjusted padding for wider button with right blend */
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+      transition: all 0.2s ease;
+      margin-left: 0;
+      width: calc(100% - 0.5rem);
+    }
+
+    .sidebar-nav a:hover:not(.active) {
+      background-color: rgba(255,117,0,0.1);
+      color: var(--orange-accent);
+    }
+
+    .sidebar-nav a.active {
+      background-color: rgba(255, 117, 0, 0.1);
+      color: var(--orange-accent);
+      border: 1px solid var(--orange-accent);
+      border-left: none;
+      pointer-events: none;
+      font-weight: 700;
+    }
+
+    /* Chat Specific Styles */
+    .chat-container {
+        display: flex;
+        margin-top: 40px; /* Space below header */
+        flex-grow: 1;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: var(--secondary-bg);
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        overflow: hidden; /* Hide overflowing chat list or messages */
+        min-height: 70vh; /* Ensure chat container has a minimum height */
+    }
+
+    .chat-list-area {
+        width: 300px; /* Example width for chat list */
+        border-right: 1px solid #ccc;
+        overflow-y: auto; /* Add scrolling for chat list */
+        flex-shrink: 0;
+         padding-bottom: 20px; /* Add padding at the bottom */
+    }
+
+    .chat-list-item {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .chat-list-item:last-child {
+        border-bottom: none;
+    }
+
+    .chat-list-item:hover {
+        background-color: var(--bg-color);
+    }
+
+     .chat-list-item.active {
+        background-color: var(--bg-color);
+        font-weight: 600;
+     }
+
+    .chat-list-item h4 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+        color: var(--text-color);
+    }
+
+    .chat-list-item p {
+        font-size: 0.9rem;
+        color: #4b5563;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .chat-conversation-area {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .messages-display {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto; /* Add scrolling for messages */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        margin-bottom: 15px;
+        max-width: 70%; /* Limit message width */
+        word-wrap: break-word; /* Break long words */
+    }
+
+    .message .sender {
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 3px;
+        color: #4b5563;
+    }
+
+    .message .text {
+        padding: 10px 15px;
+        border-radius: 8px;
+    }
+
+    .message.sent .text {
+        background-color: var(--orange-accent);
+        color: white;
+        align-self: flex-end; /* Align sent messages to the right */
+        border-bottom-right-radius: 2px; /* Adjust corner for flow */
+    }
+
+    .message.received .text {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        align-self: flex-start; /* Align received messages to the left */
+         border-bottom-left-radius: 2px; /* Adjust corner for flow */
+    }
+
+     .message.sent { align-self: flex-end; }
+     .message.received { align-self: flex-start; }
+
+
+    .message-input-area {
+        display: flex;
+        padding: 20px;
+        border-top: 1px solid #ccc;
+        background-color: var(--secondary-bg); /* Match container background */
+        flex-shrink: 0; /* Prevent input area from shrinking */
+    }
+
+    .message-input-area input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-right: 10px;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        outline: none; /* Remove default outline */
+        transition: border-color 0.2s ease;
+    }
+
+    .message-input-area input[type="text"]:focus {
+        border-color: var(--orange-accent);
+    }
+
+    .message-input-area button {
+        padding: 10px 20px;
+        background-color: var(--orange-accent);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+         flex-shrink: 0; /* Prevent button from shrinking */
+    }
+
+    .message-input-area button:hover {
+        background-color: #e06a00;
+    }
+     .message-input-area button:disabled {
+         background-color: #ccc;
+         cursor: not-allowed;
+     }
+
+
+     footer {
+        text-align:center;
+        padding:20px;
+        color:#666;
+        font-size:14px;
+        margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="chats.html" class="active">Chats</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="groups.html">Groups</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main-content-area">
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
+          </div>
+           <div class="nav-links">
+            <a href="channels.html">CHANNELS</a>
+            <a href="messages.html">DIRECT MESSAGES</a>
+            <a href="groups.html">GROUPS</a>
+            <a href="discover.html">DISCOVER</a>
+            <a href="help.html">HELP</a>
+          </div>
+          <div class="auth-buttons">
+            <a href="#" id="logoutButton" class="button logout"><span class="arrow">›</span> LOGOUT <span class="arrow">‹</span></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-list-area" id="chatList">
+             <p style="text-align: center; padding: 20px;">Loading chats...</p>
+            </div>
+        <div class="chat-conversation-area">
+            <div class="messages-display" id="messagesDisplay">
+                 <p style="text-align: center; margin-top: 20px;">Select a chat to view messages.</p>
+                </div>
+            <div class="message-input-area">
+                <input type="text" id="newMessageInput" placeholder="Type a message..." disabled>
+                <button id="sendMessageButton" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+     <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+      © 2025 SOGA
+    </footer>
+  </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Firebase services (ensure firebase.js is loaded first)
+       await new Promise(r => {
+        const iv = setInterval(() => {
+          if (firebase.apps.length) { clearInterval(iv); r(); }
+        }, 100);
+      });
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      const chatListArea = document.getElementById('chatList');
+      const messagesDisplayArea = document.getElementById('messagesDisplay');
+      const newMessageInput = document.getElementById('newMessageInput');
+      const sendMessageButton = document.getElementById('sendMessageButton');
+
+      let currentUser = null;
+      let activeChatId = null;
+      let messagesListener = null; // To manage real-time listener
+
+       // Store fetched user data to avoid repeated lookups (optional but good for performance)
+       const userDataCache = {};
+
+       // Function to get username from UID (checks cache first, then Firestore)
+       async function getUsername(uid) {
+           if (userDataCache[uid]) {
+               return userDataCache[uid].username;
+           }
+           try {
+               const doc = await db.collection('users').doc(uid).get();
+               if (doc.exists) {
+                   userDataCache[uid] = doc.data();
+                   return userDataCache[uid].username;
+               }
+               return 'Unknown User'; // Fallback
+           } catch (error) {
+               console.error("Error fetching user:", error);
+               return 'Error User'; // Fallback on error
+           }
+       }
+
+
+      // Function to display chats in the list
+      async function displayChatList(chats) {
+          chatListArea.innerHTML = ''; // Clear current list
+           if (chats.length === 0) {
+               chatListArea.innerHTML = '<p style="text-align: center; padding: 20px;">No chats yet.</p>';
+               messagesDisplayArea.innerHTML = '<p style="text-align: center; margin-top: 20px;">Start a conversation with a friend!</p>';
+               newMessageInput.disabled = true;
+               sendMessageButton.disabled = true;
+               return;
+           }
+
+          for (const chat of chats) {
+              const chatItem = document.createElement('div');
+              chatItem.classList.add('chat-list-item');
+              if (chat.id === activeChatId) {
+                  chatItem.classList.add('active');
+              }
+              chatItem.dataset.chatId = chat.id; // Store chat ID on the element
+
+              let chatDisplayName = 'New Chat';
+              if (chat.isGroupChat) {
+                  chatDisplayName = chat.groupName || 'Unnamed Group';
+              } else {
+                  // For DMs, find the other participant's name/username
+                  const otherParticipantId = chat.participants.find(id => id !== currentUser.uid);
+                  chatDisplayName = await getUsername(otherParticipantId); // Fetch username
+              }
+
+              chatItem.innerHTML = `
+                  <h4>${chatDisplayName}</h4>
+                  <p>${chat.lastMessageText || 'No messages yet'}</p>
+              `;
+              chatItem.addEventListener('click', () => {
+                  setActiveChat(chat.id);
+              });
+              chatListArea.appendChild(chatItem);
+          }
+      }
+
+       // Function to display messages in the conversation area
+        async function displayMessages(messages) {
+            messagesDisplayArea.innerHTML = ''; // Clear current messages
+             if (messages.length === 0) {
+                 messagesDisplayArea.innerHTML = '<p style="text-align: center; margin-top: 20px;">No messages yet. Start the conversation!</p>';
+                 return;
+             }
+
+            for (const message of messages) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add(message.senderId === currentUser.uid ? 'sent' : 'received');
+
+                let senderName = '';
+                 if (message.senderId === currentUser.uid) {
+                     senderName = 'You';
+                 } else {
+                     senderName = await getUsername(message.senderId); // Fetch sender username
+                 }
+
+                messageElement.innerHTML = `
+                    ${message.senderId !== currentUser.uid ? `<div class="sender">${senderName}</div>` : ''}
+                    <div class="text">${message.text}</div>
+                `;
+                messagesDisplayArea.appendChild(messageElement);
+            }
+             // Scroll to the bottom after rendering
+            messagesDisplayArea.scrollTop = messagesDisplayArea.scrollHeight;
+        }
+
+        // Function to set the active chat and load messages
+        function setActiveChat(chatId) {
+            if (activeChatId === chatId) return; // Don't reload if already active
+
+            activeChatId = chatId;
+
+            // Remove previous listener if exists
+            if (messagesListener) {
+                messagesListener(); // Unsubscribe from previous chat
+            }
+
+             // Update active class in chat list
+            document.querySelectorAll('.chat-list-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.chatId === chatId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Clear current messages and show loading or placeholder
+            messagesDisplayArea.innerHTML = '<p style="text-align: center; margin-top: 20px;">Loading messages...</p>';
+
+
+            // Listen for messages in the new active chat in real-time
+            messagesListener = db.collection('chats').doc(chatId).collection('messages')
+                .orderBy('timestamp') // Order messages by time
+                .onSnapshot(snapshot => {
+                    const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    displayMessages(messages);
+
+                     // Optional: Mark messages as read when chat is opened (consider performance for large chats)
+                     // You might only mark messages currently visible in the viewport as read.
+                     // const batch = db.batch();
+                     // messages.forEach(msg => {
+                     //     if (msg.senderId !== currentUser.uid && !msg.readBy.includes(currentUser.uid)) {
+                     //         batch.update(db.collection('chats').doc(chatId).collection('messages').doc(msg.id), {
+                     //             readBy: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+                     //         });
+                     //     }
+                     // });
+                     // batch.commit().catch(e => console.error("Error marking messages as read:", e));
+
+
+                }, error => {
+                    console.error("Error listening to messages:", error);
+                    messagesDisplayArea.innerHTML = '<p style="text-align: center; margin-top: 20px;">Error loading messages.</p>';
+                });
+
+            // Enable message input area
+            newMessageInput.disabled = false;
+            sendMessageButton.disabled = false;
+
+             console.log(`Active chat set to: ${chatId}`);
+        }
+
+
+        // Function to send a new message
+        async function sendMessage() {
+            const text = newMessageInput.value.trim();
+            if (text === '' || !activeChatId || !currentUser) return;
+
+            try {
+                const messageRef = db.collection('chats').doc(activeChatId).collection('messages').doc(); // Use doc() to get a ref with auto ID
+                 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+                await messageRef.set({
+                    senderId: currentUser.uid,
+                    text: text,
+                    timestamp: timestamp,
+                    readBy: [currentUser.uid] // Mark message as read by sender immediately
+                });
+                 // Optionally update lastMessageText and timestamp in the chat document
+                 await db.collection('chats').doc(activeChatId).update({
+                    lastMessageText: text,
+                    lastMessageTimestamp: timestamp
+                 });
+
+                newMessageInput.value = ''; // Clear input field
+            } catch (error) {
+                console.error("Error sending message:", error);
+                // Display error message to user
+            }
+        }
+
+        // Event listener for send button
+        sendMessageButton.addEventListener('click', sendMessage);
+
+        // Event listener for pressing Enter in the input field
+        newMessageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+
+      // Logout functionality
+      const logoutButton = document.getElementById('logoutButton');
+      logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          window.location.href = 'index.html'; // Redirect to index page after logout
+        } catch (error) {
+          console.error("Error logging out:", error);
+          // Optionally display an error message to the user
+        }
+      });
+
+      // Check auth state on page load
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          // If user is not logged in, redirect to login page
+          window.location.href = 'login.html';
+        } else {
+          currentUser = user;
+          // User is logged in, fetch and display their chats
+
+          // Listen for the user's chats in real-time
+          db.collection('chats')
+            .where('participants', 'array-contains', currentUser.uid) // Filter chats the user is in
+            .orderBy('lastMessageTimestamp', 'desc') // Order by recent activity
+            .onSnapshot(snapshot => {
+                const chats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                displayChatList(chats);
+                // Optionally set the first chat as active by default if none is active
+                if (chats.length > 0 && activeChatId === null) {
+                     setActiveChat(chats[0].id);
+                } else if (chats.length === 0) {
+                     messagesDisplayArea.innerHTML = '<p style="text-align: center; margin-top: 20px;">No chats yet. Start a conversation!</p>';
+                     newMessageInput.disabled = true;
+                     sendMessageButton.disabled = true;
+                }
+            }, error => {
+                console.error("Error listening to chats:", error);
+                chatListArea.innerHTML = '<p style="padding: 20px; text-align: center;">Error loading chats.</p>';
+                 messagesDisplayArea.innerHTML = ''; // Clear messages area on chat list error
+                 newMessageInput.disabled = true;
+                 sendMessageButton.disabled = true;
+            });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
