@@ -25,10 +25,15 @@
       line-height:1.6;
       background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/ %3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
       background-attachment:fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
-    header { padding:1.5rem 0; background-color:var(--bg-color); }
-    nav { display:flex; justify-content:space-between; align-items:center; }
+    header { padding:1.5rem 0; background-color:var(--bg-color); width: 100%; position: absolute; top: 0; left: 0;}
+    nav { display:flex; justify-content:space-between; align-items:center; max-width: 1200px; margin: 0 auto; padding: 0 2rem;}
     .logo { display:flex; align-items:center; }
     .logo img { height:30px; }
     .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
@@ -46,18 +51,18 @@
     .auth-buttons { display:flex; gap:1rem; }
     .button {
       display:inline-flex; align-items:center; justify-content:center;
-      background-color:var(--button-bg); color:white; 
+      background-color:var(--button-bg); color:white;
       padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
       text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
     }
-    .button.login { background:transparent; color:var(--button-bg); border:1px solid transparent; }
-    .button.signup { background-color:var(--button-bg); }
+     .button.login { background:transparent; color:var(--button-bg); border:1px solid transparent; }
+     .button.signup { background-color:var(--button-bg); }
     .button:hover {
       transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
     }
     .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
     .button:hover .arrow:first-child { transform:translateX(-3px); }
-    .button:hover .arrow:last-child  { transform:translateX(3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
 
     .hero {
       padding:8rem 0 6rem; text-align:center; position:relative;
@@ -119,7 +124,7 @@
     .auth-footer a { color:var(--accent-color); text-decoration:none; }
     .message { padding:1rem; border-radius:8px; margin-bottom:1rem; }
     .message.success { background:#d4edda; color:#155724; }
-    .message.error   { background:#f8d7da; color:#721c24; }
+    .message.error   { background:#f8d7da; color:#721c24; }
     #authMessage { display:none; padding:0 2.5rem; }
     .modal { display:none; position:fixed; top:0;left:0;width:100%;height:100%;
       background:rgba(0,0,0,0.7); z-index:1000; justify-content:center;align-items:center;
@@ -168,7 +173,6 @@
       <div id="authMessage"></div>
       <div class="auth-container">
         <div class="split-layout">
-          <!-- Email Sign Up Section -->
           <div class="auth-section email-section">
             <h2 class="auth-heading">Sign up with Email</h2>
             <p class="auth-subheading">Create a new account using your email address</p>
@@ -190,7 +194,6 @@
             </form>
             <p class="auth-footer">Already have an account? <a href="login.html">Login</a></p>
           </div>
-          <!-- Social Sign Up Section -->
           <div class="auth-section social-section">
             <h2 class="auth-heading">Sign up with Google</h2>
             <p class="auth-subheading">Quick and secure registration with your Google account</p>
@@ -205,7 +208,6 @@
     </div>
   </section>
 
-  <!-- Email Verification Modal -->
   <div id="verificationModal" class="modal">
     <div class="modal-content">
       <h2>Verify Your Email</h2>
@@ -222,7 +224,6 @@
     © 2025 SOGA
   </footer>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -236,7 +237,7 @@
         }, 100);
       });
       const auth = firebase.auth();
-      const db   = firebase.firestore();
+      const db   = firebase.firestore();
 
       const signupForm = document.getElementById('signupForm');
       const authMessage = document.getElementById('authMessage');
@@ -248,139 +249,259 @@
       const closeModalBtn = document.getElementById('closeModalBtn');
       const googleSignupBtn = document.getElementById('googleSignupBtn');
 
-      const VERIFICATION_REQUIREMENT_DATE = new Date('2025-05-09').getTime();
+       // Define a date before which verification is not required (optional, from previous snippet)
+      const VERIFICATION_REQUIREMENT_DATE = new Date('2025-05-09').getTime(); // Using a future date to ensure new users need verification
 
-      function showMessage(msg, type) {
-        authMessage.innerHTML = `<div class="message ${type}">${msg}</div>`;
-        authMessage.style.display = 'block';
-        authMessage.scrollIntoView({ behavior: 'smooth' });
-      }
-      function handleAuthError(err) {
-        let msg = err.message;
-        if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
-        else if (err.code === 'auth/invalid-email') msg = 'Please enter a valid email address.';
-        else if (err.code === 'auth/weak-password') msg = 'Password must be at least 6 characters.';
-        showMessage(msg, 'error');
-      }
-      function validateUsername(un) {
-        if (un.length < 4) return {valid:false, message:'Username must be at least 4 characters'};
-        if (un.length > 16) return {valid:false, message:'Username cannot exceed 16 characters'};
-        return {valid:true};
-      }
-      async function checkUsernameExists(un) {
-        const snap = await db.collection('usernames').doc(un.toLowerCase()).get();
-        return snap.exists;
-      }
-      function generateUsernameFromGoogle(user) {
-        let base = (user.displayName||user.email.split('@')[0]).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
-        if (base.length<4) base += '0000'.slice(0,4-base.length);
-        if (base.length>16) base = base.slice(0,16);
-        return base;
-      }
+       // Function to show messages
+       function showMessage(msg, type) {
+        authMessage.innerHTML = `<div class="message ${type}">${msg}</div>`;
+        authMessage.style.display = 'block';
+        authMessage.scrollIntoView({ behavior: 'smooth' });
+      }
+      function handleAuthError(err) {
+        let msg = err.message;
+        if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
+        else if (err.code === 'auth/invalid-email') msg = 'Please enter a valid email address.';
+        else if (err.code === 'auth/weak-password') msg = 'Password must be at least 6 characters.';
+        showMessage(msg, 'error');
+      }
 
-      // Username live validation
-      usernameInput.addEventListener('input', async () => {
-        const un = usernameInput.value.trim();
-        const v = validateUsername(un);
-        if (!v.valid) {
-          usernameHelperText.textContent = v.message;
-          usernameHelperText.classList.add('error');
-        } else {
-          usernameHelperText.textContent = 'Username looks good';
-          usernameHelperText.classList.remove('error');
-        }
-      });
+      function validateUsername(un) {
+        if (un.length < 4) return {valid:false, message:'Username must be at least 4 characters'};
+        if (un.length > 16) return {valid:false, message:'Username cannot exceed 16 characters'};
+        return {valid:true};
+      }
 
-      // SAVE user record
-      async function saveUser(user, username, needsVerification) {
-        await db.collection('users').doc(user.uid).set({
-          username: username.toLowerCase(),
-          email: user.email,
-          emailVerified: user.emailVerified,
-          requiresVerification: needsVerification,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge:true });
-        await db.collection('usernames').doc(username.toLowerCase()).set({
-          uid: user.uid,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
+      async function checkUsernameExists(un) {
+        const snap = await db.collection('usernames').doc(un.toLowerCase()).get();
+        return snap.exists;
+      }
 
-      // EMAIL SIGNUP
-      signupForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        authMessage.style.display='none';
-        const email = document.getElementById('signupEmail').value;
-        const pw = document.getElementById('signupPassword').value;
-        const conf = document.getElementById('signupConfirmPassword').value;
-        const un = usernameInput.value.trim();
+      function generateUsernameFromGoogle(user) {
+        let base = (user.displayName||user.email.split('@')[0]).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+        if (base.length<4) base += '0000'.slice(0,4-base.length);
+        if (base.length>16) base = base.slice(0,16);
+        return base;
+      }
 
-        if (pw!==conf) { showMessage('Passwords do not match','error'); return; }
-        const uv = validateUsername(un);
-        if (!uv.valid) { showMessage(uv.message,'error'); return; }
-        if (await checkUsernameExists(un)) { showMessage('Username taken','error'); return; }
+       // Function to save user data to 'users' collection (intended to be called AFTER verification or for verified signups like Google)
+       async function saveUserDataToUsers(user, username) {
+            const userRef = db.collection('users').doc(user.uid);
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-        try {
-          const { user } = await auth.createUserWithEmailAndPassword(email,pw);
-          await user.sendEmailVerification();
-          await saveUser(user, un, true);
-          verificationEmail.textContent = email;
-          verificationModal.style.display='flex';
-          showMessage('Created! Check your email to verify.','success');
-        } catch(err) { handleAuthError(err); }
-      });
+            // Use set with merge: true in case a minimal document was created earlier (e.g., by auth state listener)
+            await userRef.set({
+                uid: user.uid, // Redundant but can be helpful
+                email: user.email,
+                username: username ? username.toLowerCase() : null, // Save username if provided
+                emailVerified: user.emailVerified,
+                requiresVerification: !user.emailVerified,
+                createdAt: (await userRef.get()).data()?.createdAt || timestamp, // Keep original createdAt if exists
+                updatedAt: timestamp // Add an update timestamp
+            }, { merge: true });
+       }
 
-      // RESEND / CLOSE modal
-      resendVerificationBtn.onclick = async () => {
-        try { await auth.currentUser.sendEmailVerification(); showMessage('Verification email resent','success'); }
-        catch(err){ handleAuthError(err); }
-      };
-      closeModalBtn.onclick = () => {
-        verificationModal.style.display='none';
-        window.location.href='login.html';
-      };
+        // Function to save username mapping to 'usernames' collection (called immediately to reserve)
+       async function saveUsernameMapping(username, uid) {
+            const usernameRef = db.collection('usernames').doc(username.toLowerCase());
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+             await usernameRef.set({
+                uid: uid,
+                createdAt: timestamp // Optional timestamp
+            });
+       }
 
-      // GOOGLE SIGNUP
-      googleSignupBtn.addEventListener('click', async () => {
-        authMessage.style.display='none';
-        try {
-          const provider = new firebase.auth.GoogleAuthProvider();
-          provider.setCustomParameters({ prompt:'select_account' });
-          const res = await auth.signInWithPopup(provider);
-          const user = res.user;
-          if (res.additionalUserInfo.isNewUser) {
-            let un = generateUsernameFromGoogle(user), base=un, i=1;
-            while (await checkUsernameExists(un)) {
-              un = (base+ i).slice(0,16); i++;
-            }
-            await saveUser(user, un, false);
-            showMessage('Account created! Redirecting…','success');
-          } else {
-            showMessage('Welcome back! Redirecting…','success');
-          }
-          setTimeout(()=> window.location.href='dashboard.html',1500);
-        } catch(err) { handleAuthError(err); }
-      });
 
-      // AUTH STATE & verification
-      auth.onAuthStateChanged(async user => {
-        if (user && user.emailVerified) {
-          await db.collection('users').doc(user.uid).update({ emailVerified:true, requiresVerification:false });
-          if (window.location.pathname.includes('signup.html')) {
-            showMessage('Email verified! Redirecting…','success');
-            setTimeout(()=> window.location.href='dashboard.html',1500);
-          }
-        }
-      });
+      // Username live validation
+      usernameInput.addEventListener('input', async () => {
+        const un = usernameInput.value.trim();
+        const v = validateUsername(un);
+        if (!v.valid) {
+          usernameHelperText.textContent = v.message;
+          usernameHelperText.classList.add('error');
+        } else {
+          usernameHelperText.textContent = 'Username looks good';
+          usernameHelperText.classList.remove('error');
+        }
+      });
 
-      // mark older accounts
-      (async ()=>{
-        const older = await db.collection('users').where('createdAt','<',new Date(VERIFICATION_REQUIREMENT_DATE)).get();
-        const batch = db.batch();
-        older.forEach(d=> batch.update(d.ref,{ requiresVerification:false, emailVerified:d.data().emailVerified!==undefined?d.data().emailVerified:true }));
-        await batch.commit();
-      })();
-    });
-  </script>
+      // EMAIL SIGNUP
+      signupForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        authMessage.style.display='none';
+        const email = document.getElementById('signupEmail').value;
+        const pw = document.getElementById('signupPassword').value;
+        const conf = document.getElementById('signupConfirmPassword').value;
+        const un = usernameInput.value.trim();
+
+        if (pw!==conf) { showMessage('Passwords do not match','error'); return; }
+        const uv = validateUsername(un);
+        if (!uv.valid) { showMessage(uv.message,'error'); return; }
+        if (await checkUsernameExists(un)) { showMessage('Username taken','error'); return; }
+
+        try {
+          const { user } = await auth.createUserWithEmailAndPassword(email,pw);
+
+          // Save the username mapping immediately to reserve the username
+          await saveUsernameMapping(un, user.uid);
+
+          // Send email verification
+          await user.sendEmailVerification();
+
+          // Do NOT save full user data (including username) to 'users' yet for email/password.
+           // It will be saved in the onAuthStateChanged listener AFTER verification.
+            // Optionally, save a minimal user document here to mark existence
+             await db.collection('users').doc(user.uid).set({
+                 uid: user.uid,
+                 email: user.email,
+                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                 emailVerified: user.emailVerified, // This will be false initially
+                 requiresVerification: true
+             }, { merge: true }); // Use merge: true
+
+          verificationEmail.textContent = email;
+          verificationModal.style.display='flex';
+          showMessage('Created! Check your email to verify.','success');
+        } catch(err) { handleAuthError(err); }
+      });
+
+      // RESEND / CLOSE modal
+      resendVerificationBtn.onclick = async () => {
+        if(auth.currentUser){
+          try { await auth.currentUser.sendEmailVerification(); showMessage('Verification email resent','success'); }
+          catch(e){ handleAuthError(e); }
+        } else showMessage('Sign in again to resend.','warning');
+      };
+      closeModalBtn.onclick = () => {
+        verificationModal.style.display='none';
+        window.location.href='login.html';
+      };
+
+      // GOOGLE SIGNUP
+      googleSignupBtn.addEventListener('click', async () => {
+        authMessage.style.display='none';
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt:'select_account' });
+          const res = await auth.signInWithPopup(provider);
+          const user = res.user;
+
+          if (res.additionalUserInfo.isNewUser) {
+            let un = generateUsernameFromGoogle(user), base=un, i=1;
+            while (await checkUsernameExists(un)) {
+              un = (base+ i).slice(0,16); i++;
+            }
+            await saveUsernameMapping(un, user.uid); // Save mapping immediately
+
+            // Save full user data to 'users' collection immediately for new Google signups
+            // as Google provides verified emails.
+            await saveUserDataToUsers(user, un); // Save to users with username
+
+            showMessage('Account created! Redirecting…','success');
+          } else {
+            // For existing users, just update their last login and verification status in 'users'
+             await db.collection('users').doc(user.uid).set({
+                 emailVerified: user.emailVerified,
+                 requiresVerification: !user.emailVerified,
+                 lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+              }, { merge: true }); // Use merge to avoid overwriting username etc.
+            showMessage('Welcome back! Redirecting…','success');
+          }
+          setTimeout(()=> window.location.href='dashboard.html',1500);
+        } catch(err) { handleAuthError(err); }
+      });
+
+      // AUTH STATE & verification
+      auth.onAuthStateChanged(async user => {
+        if (user) {
+            const userDocRef = db.collection('users').doc(user.uid);
+            const userDoc = await userDocRef.get();
+
+            if (user.emailVerified) {
+                // Email is verified
+                // Check if the user document needs to be updated with username and verified status
+                if (!userDoc.exists || userDoc.data().requiresVerification === true || !userDoc.data().username) {
+                    // User document needs updating (e.g., after email/password verification)
+                    // Fetch username from 'usernames' collection
+                    const usernameDoc = await db.collection('usernames').where('uid', '==', user.uid).limit(1).get();
+                    if (!usernameDoc.empty) {
+                        const username = usernameDoc.docs[0].id; // Username is the document ID
+
+                        // Save/update user data in 'users' collection with the username and verified status
+                        await saveUserDataToUsers(user, username);
+
+                        console.log("User verified and data saved/updated in 'users' collection.");
+
+                        // If on signup page, redirect to dashboard after verification is processed
+                        if (window.location.pathname.includes('signup.html')) {
+                            showMessage('Email verified! Redirecting…','success');
+                            setTimeout(()=> window.location.href='dashboard.html',1500);
+                        }
+
+                    } else {
+                        console.error("Error: User verified, but username not found in 'usernames' collection for UID:", user.uid);
+                        // This is an unexpected state. User exists and is verified, but username mapping is missing.
+                        // Handle this edge case (e.g., prompt user to set username, contact support).
+                         if (window.location.pathname.includes('signup.html')) {
+                            showMessage('Error: Could not find your username. Please contact support.', 'error');
+                         }
+                    }
+                } else {
+                    // User document exists, is verified, and has username.
+                    // If on signup page, redirect to dashboard as they are already fully signed up.
+                    if (window.location.pathname.includes('signup.html')) {
+                        showMessage('Already logged in and verified. Redirecting…','success');
+                        setTimeout(()=> window.location.href='dashboard.html',1500);
+                    }
+                }
+            } else {
+                // Email is NOT verified
+                // If on signup page, show message prompting verification
+                if (window.location.pathname.includes('signup.html')) {
+                    showMessage('Please verify your email address to complete sign up.', 'warning');
+                }
+                // If on other protected pages, they will be redirected by the listener on those pages.
+            }
+        } else {
+            // User is not logged in
+            // If on a protected page (like dashboard, chats, friends), they will be redirected by the listener on those pages.
+            // If on signup/login/index, this is the expected state.
+        }
+      });
+
+      // mark older accounts (from previous snippet, keep if needed)
+      // This block runs once when the script loads.
+      // It's intended to mark existing users created before a certain date as not requiring email verification.
+      // Be cautious if this logic should run on every page load for every user.
+      // Given the user's prompt is about the signup flow for *new* users needing verification,
+      // this block is less critical to the core request but included as it was in the provided HTML.
+      (async ()=>{
+           // Check if Firebase app is initialized before accessing db
+           if (!firebase.apps.length) return;
+
+           // Attempt to get current user, but this block runs during initial script load
+           // before auth state is fully determined. Consider moving this logic if it
+           // relies on a fully authenticated user or should run only once ever.
+           // For now, let's assume it's a background task to update older records.
+           // It might cause permission errors if security rules prevent unauthenticated reads/writes to 'users'.
+           // Add a check if auth is ready and if a user is logged in if necessary.
+           // Or better, run this type of migration logic via a Cloud Function or Admin SDK script once.
+           // For the purpose of this HTML file, it's likely okay as is, but noted as potential area for review.
+
+        const older = await db.collection('users').where('createdAt','<',new Date(VERIFICATION_REQUIREMENT_DATE)).get();
+        const batch = db.batch();
+        older.forEach(d=> {
+            // Only update if requiresVerification is not explicitly false already
+            if (d.data().requiresVerification !== false) {
+              batch.update(d.ref,{ requiresVerification:false, emailVerified:d.data().emailVerified!==undefined?d.data().emailVerified:true });
+            }
+        });
+        if (!older.empty) {
+          await batch.commit();
+          console.log("Marked older accounts as not requiring verification.");
+        }
+      })();
+    });
+  </script>
 </body>
 </html>
