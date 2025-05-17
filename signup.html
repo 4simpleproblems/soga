@@ -6,7 +6,7 @@
   <title>SOGA | Sign Up</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --primary-color: #0f0f0f;
@@ -17,262 +17,117 @@
       --button-bg: #1a1a1a;
       --orange-accent: #ff7500;
     }
-    * {
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-color);
       background-color: var(--bg-color);
-      line-height: 1.6;
-      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
-      background-attachment: fixed;
+      line-height:1.6;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/ %3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
+      background-attachment:fixed;
     }
-    .container {
-      max-width: 1200px; 
-      margin: 0 auto; 
-      padding: 0 2rem;
-    }
-    header {
-      padding: 1.5rem 0; 
-      background-color: var(--bg-color);
-    }
-    nav {
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-    }
-    .logo {
-      display: flex; 
-      align-items: center;
-    }
-    .logo-text {
-      font-weight: 800; 
-      font-size: 1.5rem; 
-      letter-spacing: -0.01em; 
-      margin-left: 0.5rem;
-    }
-    .nav-links {
-      display: flex; 
-      gap: 2rem;
-    }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+    header { padding:1.5rem 0; background-color:var(--bg-color); }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; }
+    .logo img { height:30px; }
+    .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
+    .nav-links { display:flex; gap:2rem; }
     .nav-links a {
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      border-radius: 6px;
-      transition: all 0.3s ease;
+      text-decoration:none; color:var(--text-color); font-weight:500;
+      font-size:0.9rem; letter-spacing:0.5px; text-transform:uppercase;
+      padding:8px 12px; border-radius:6px; transition:all .3s ease;
     }
     .nav-links a:hover {
-      background-color: rgba(255, 117, 0, 0.1);
-      color: var(--orange-accent);
-      transform: translateY(-2px);
+      background-color:rgba(255,117,0,0.1);
+      color:var(--orange-accent);
+      transform:translateY(-2px);
     }
-    .auth-buttons {
-      display: flex; 
-      gap: 1rem;
-    }
+    .auth-buttons { display:flex; gap:1rem; }
     .button {
-      display: inline-flex; 
-      align-items: center; 
-      justify-content: center;
-      background-color: var(--button-bg);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.85rem;
-      letter-spacing: 0.5px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background-color:var(--button-bg); color:white; 
+      padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
+      text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
     }
-    .button.login {
-      background-color: transparent;
-      color: var(--button-bg);
-      border: 1px solid transparent;
-    }
-    .button.signup {
-      background-color: var(--button-bg);
-    }
+    .button.login { background:transparent; color:var(--button-bg); border:1px solid transparent; }
+    .button.signup { background-color:var(--button-bg); }
     .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
     }
-    .arrow {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-      display: inline-block;
-      transition: transform 0.3s ease;
-    }
-    .button:hover .arrow:first-child {
-      transform: translateX(-3px);
-    }
-    .button:hover .arrow:last-child {
-      transform: translateX(3px);
-    }
+    .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
+    .button:hover .arrow:first-child { transform:translateX(-3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
+
     .hero {
-      padding: 8rem 0 6rem;
-      text-align: center;
-      position: relative;
+      padding:8rem 0 6rem; text-align:center; position:relative;
     }
     .background-globe {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      opacity: 0.3;
-      pointer-events: none;
+      position:absolute; width:100%; height:100%; top:0; left:0;
+      z-index:-1; opacity:0.3; pointer-events:none;
     }
     .globe-circle {
-      position: absolute;
-      border: 1px solid #e0dcd4;
-      border-radius: 50%;
+      position:absolute; border:1px solid #e0dcd4; border-radius:50%;
     }
-    .globe-circle:nth-child(1) {
-      width: 700px;
-      height: 700px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-circle:nth-child(2) {
-      width: 900px;
-      height: 900px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-circle:nth-child(3) {
-      width: 1100px;
-      height: 1100px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-line {
-      position: absolute;
-      height: 1px;
-      width: 100%;
-      background-color: #e0dcd4;
-      top: 50%;
-      transform-origin: center;
-    }
-    .globe-line:nth-child(4){ transform: rotate(30deg); }
-    .globe-line:nth-child(5){ transform: rotate(60deg); }
-    .globe-line:nth-child(6){ transform: rotate(90deg); }
-    .globe-line:nth-child(7){ transform: rotate(120deg); }
-    .globe-line:nth-child(8){ transform: rotate(150deg); }
+    .globe-circle:nth-child(1){width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-circle:nth-child(2){width:900px;height:900px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-circle:nth-child(3){width:1100px;height:1100px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-line { position:absolute; height:1px; width:100%; background-color:#e0dcd4; top:50%; transform-origin:center; }
+    .globe-line:nth-child(4){transform:rotate(30deg);} .globe-line:nth-child(5){transform:rotate(60deg);}
+    .globe-line:nth-child(6){transform:rotate(90deg);} .globe-line:nth-child(7){transform:rotate(120deg);}
+    .globe-line:nth-child(8){transform:rotate(150deg);}
 
-    /* Sign-up box */
-    .signup-box {
-      background: var(--secondary-bg);
-      margin: 0 auto;
-      display: flex;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      max-width: 800px;
-      width: 100%;
+    .auth-container {
+      background:var(--secondary-bg); border-radius:12px; overflow:hidden;
+      box-shadow:0 5px 15px rgba(0,0,0,0.05); max-width:900px; margin:40px auto;
     }
-    .signup-left, .signup-right {
-      flex: 1;
-      padding: 2.5rem;
-      background: var(--secondary-bg);
+    .split-layout { display:flex; min-height:500px; }
+    .auth-section { flex:1; padding:2.5rem; }
+    .email-section { border-right:1px solid #ccc; background:var(--secondary-bg); }
+    .social-section {
+      background:var(--secondary-bg); display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
     }
-    .signup-left {
-      border-right: 1px solid #ccc;
+    .auth-heading {
+      font-size:2rem; font-weight:900; text-transform:uppercase;
+      letter-spacing:-0.025em; margin-bottom:1rem; color:var(--text-color);
+      text-align:center;
     }
-    .signup-left h1,
-    .signup-right h1 {
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.025em;
-      text-align: center;
-      color: var(--text-color);
+    .auth-subheading {
+      color:#4b5563; margin-bottom:2rem; text-align:center;
     }
-    .signup-left label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-      font-size: 0.9rem;
+    .auth-form .form-group { margin-bottom:1.5rem; }
+    .auth-form input {
+      width:100%; padding:.8rem; border:1px solid #ccc;
+      border-radius:6px; font-size:.95rem; font-family:'Roboto Mono',monospace;
     }
-    .signup-left input {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 0.95rem;
+    .btn-primary {
+      width:100%; padding:.8rem; background-color:var(--button-bg);
+      color:white; border:none; border-radius:8px; font-weight:600;
+      cursor:pointer; transition:all .3s ease; font-size:.9rem;
     }
-    .btn-form {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.15); }
+    .google-auth {
+      display:inline-flex; align-items:center; justify-content:center;
+      background:#ffffff; border:1px solid rgba(255,255,255,0.8);
+      color:var(--primary-color); padding:.8rem 1.2rem; border-radius:8px;
+      font-weight:700; text-transform:uppercase; letter-spacing:-0.02em;
+      cursor:pointer; transition:all .3s ease; font-size:1rem; margin-bottom:1rem;
     }
-    .btn-email {
-      background-color: var(--button-bg);
-      color: #fff;
-      margin-bottom: 1rem;
+    .social-description { font-size:.85rem; color:#6b7280; max-width:80%; }
+    .auth-footer { text-align:center; margin-top:1rem; font-size:.9rem; }
+    .auth-footer a { color:var(--accent-color); text-decoration:none; }
+    .message { padding:1rem; border-radius:8px; margin-bottom:1rem; }
+    .message.success { background:#d4edda; color:#155724; }
+    .message.error   { background:#f8d7da; color:#721c24; }
+    #authMessage { display:none; padding:0 2.5rem; }
+    .modal { display:none; position:fixed; top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.7); z-index:1000; justify-content:center;align-items:center;
     }
-    .btn-email:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    .modal-content { background:white; padding:2rem; border-radius:8px;
+      max-width:500px; width:90%; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3);
     }
-    .signup-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .signup-right p.desc {
-      font-size: 0.85rem;
-      color: #6b7280;
-      margin-bottom: 1.5rem;
-      max-width: 220px;
-      line-height: 1.4;
-    }
-    .btn-google {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.8);
-      color: var(--primary-color);
-      padding: 0.8rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-    .btn-google:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .status {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #d9534f;
-    }
+    .modal-buttons { display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; }
   </style>
 </head>
 <body>
@@ -280,8 +135,7 @@
     <div class="container">
       <nav>
         <div class="logo">
-          <img src="logo.png" alt="SOGA Logo" height="30">
-          <div class="logo-text">SOGA</div>
+          <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
         </div>
         <div class="nav-links">
           <a href="channels.html">CHANNELS</a>
@@ -310,112 +164,222 @@
       <div class="globe-line"></div>
     </div>
     <div class="container">
-      <div class="signup-box">
-        <!-- Left: Email/Password Sign-Up -->
-        <div class="signup-left">
-          <h1>Create Account</h1>
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="you@example.com" required>
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="••••••••" required>
-          <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" placeholder="••••••••" required>
-          <button id="email-signup" class="btn-form btn-email">Sign up with Email</button>
-          <p id="status" class="status"></p>
-        </div>
-        <!-- Right: Google Sign-Up -->
-        <div class="signup-right">
-          <h1>Sign Up with Google</h1>
-          <p class="desc">Use your Google account to instantly create an account—no new password required.</p>
-          <button id="google-signup" class="btn-google">Sign Up with Google</button>
+      <h1 class="auth-heading">Sign Up to SOGA</h1>
+      <div id="authMessage"></div>
+      <div class="auth-container">
+        <div class="split-layout">
+          <!-- Email Sign Up Section -->
+          <div class="auth-section email-section">
+            <h2 class="auth-heading">Sign up with Email</h2>
+            <p class="auth-subheading">Create a new account using your email address</p>
+            <form id="signupForm" class="auth-form">
+              <div class="form-group">
+                <input type="email" id="signupEmail" placeholder="Email" required autocomplete="username">
+              </div>
+              <div class="form-group">
+                <input type="password" id="signupPassword" placeholder="Password" required autocomplete="new-password" minlength="6">
+              </div>
+              <div class="form-group">
+                <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required autocomplete="new-password">
+              </div>
+              <div class="form-group">
+                <input type="text" id="signupUsername" placeholder="Username" required minlength="4" maxlength="16">
+                <p class="username-helper-text">Username must be 4–16 characters</p>
+              </div>
+              <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+            <p class="auth-footer">Already have an account? <a href="login.html">Login</a></p>
+          </div>
+          <!-- Social Sign Up Section -->
+          <div class="auth-section social-section">
+            <h2 class="auth-heading">Sign up with Google</h2>
+            <p class="auth-subheading">Quick and secure registration with your Google account</p>
+            <button id="googleSignupBtn" class="google-auth">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style="width:18px;height:18px;margin-right:10px;">
+              Sign Up with Google
+            </button>
+            <p class="social-description">Using Google Sign‑Up lets you create your SOGA account without remembering another password.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Firebase SDKs: App, Auth, Firestore -->
+  <!-- Email Verification Modal -->
+  <div id="verificationModal" class="modal">
+    <div class="modal-content">
+      <h2>Verify Your Email</h2>
+      <p>We've sent a verification email to <strong><span id="verificationEmail"></span></strong>.</p>
+      <p>Please check your inbox and click the verification link to activate your account.</p>
+      <div class="modal-buttons">
+        <button id="resendVerificationBtn" class="button secondary">Resend Email</button>
+        <button id="closeModalBtn" class="button signup">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+    © 2025 SOGA
+  </footer>
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Your firebase.js must initialize the app: firebase.initializeApp(firebaseConfig) -->
   <script src="firebase.js"></script>
   <script>
-    // Initialize Firebase services
-    const auth = firebase.auth();
-    const db   = firebase.firestore();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Firebase services
+      await new Promise(r => {
+        const iv = setInterval(() => {
+          if (firebase.apps.length) { clearInterval(iv); r(); }
+        }, 100);
+      });
+      const auth = firebase.auth();
+      const db   = firebase.firestore();
 
-    // Helper to save or update user in Firestore
-    function saveUserToFirestore(user) {
-      return db.collection('users').doc(user.uid).set({
-        email:     user.email,
-        name:      user.displayName || '',
-        provider:  user.providerData[0]?.providerId || 'password',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
+      const signupForm = document.getElementById('signupForm');
+      const authMessage = document.getElementById('authMessage');
+      const usernameInput = document.getElementById('signupUsername');
+      const usernameHelperText = document.querySelector('.username-helper-text');
+      const verificationModal = document.getElementById('verificationModal');
+      const verificationEmail = document.getElementById('verificationEmail');
+      const resendVerificationBtn = document.getElementById('resendVerificationBtn');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const googleSignupBtn = document.getElementById('googleSignupBtn');
 
-    // EMAIL SIGN-UP WITH VERIFICATION
-    document.getElementById('email-signup').addEventListener('click', () => {
-      const statusEl = document.getElementById('status');
-      statusEl.style.color = '#d9534f';
-      statusEl.textContent = '';
+      const VERIFICATION_REQUIREMENT_DATE = new Date('2025-05-09').getTime();
 
-      const email   = document.getElementById('email').value;
-      const pw      = document.getElementById('password').value;
-      const confirm = document.getElementById('confirm-password').value;
-
-      if (pw !== confirm) {
-        statusEl.textContent = 'Passwords do not match.';
-        return;
+      function showMessage(msg, type) {
+        authMessage.innerHTML = `<div class="message ${type}">${msg}</div>`;
+        authMessage.style.display = 'block';
+        authMessage.scrollIntoView({ behavior: 'smooth' });
+      }
+      function handleAuthError(err) {
+        let msg = err.message;
+        if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
+        else if (err.code === 'auth/invalid-email') msg = 'Please enter a valid email address.';
+        else if (err.code === 'auth/weak-password') msg = 'Password must be at least 6 characters.';
+        showMessage(msg, 'error');
+      }
+      function validateUsername(un) {
+        if (un.length < 4) return {valid:false, message:'Username must be at least 4 characters'};
+        if (un.length > 16) return {valid:false, message:'Username cannot exceed 16 characters'};
+        return {valid:true};
+      }
+      async function checkUsernameExists(un) {
+        const snap = await db.collection('usernames').doc(un.toLowerCase()).get();
+        return snap.exists;
+      }
+      function generateUsernameFromGoogle(user) {
+        let base = (user.displayName||user.email.split('@')[0]).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+        if (base.length<4) base += '0000'.slice(0,4-base.length);
+        if (base.length>16) base = base.slice(0,16);
+        return base;
       }
 
-      auth.createUserWithEmailAndPassword(email, pw)
-        .then(({ user }) => {
-          // Send verification email
-          return user.sendEmailVerification()
-            .then(() => saveUserToFirestore(user))
-            .then(() => user);
-        })
-        .then(user => {
-          statusEl.style.color = '#2d7a2d';
-          statusEl.textContent =
-            `Account created! A verification email was sent to ${user.email}. ` +
-            `Please verify your email before logging in.`;
-        })
-        .catch(err => {
-          console.error(err);
-          statusEl.style.color = '#d9534f';
-          statusEl.textContent = err.message;
+      // Username live validation
+      usernameInput.addEventListener('input', async () => {
+        const un = usernameInput.value.trim();
+        const v = validateUsername(un);
+        if (!v.valid) {
+          usernameHelperText.textContent = v.message;
+          usernameHelperText.classList.add('error');
+        } else {
+          usernameHelperText.textContent = 'Username looks good';
+          usernameHelperText.classList.remove('error');
+        }
+      });
+
+      // SAVE user record
+      async function saveUser(user, username, needsVerification) {
+        await db.collection('users').doc(user.uid).set({
+          username: username.toLowerCase(),
+          email: user.email,
+          emailVerified: user.emailVerified,
+          requiresVerification: needsVerification,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge:true });
+        await db.collection('usernames').doc(username.toLowerCase()).set({
+          uid: user.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-    });
-
-    // GOOGLE SIGN-UP (no verification required)
-    document.getElementById('google-signup').addEventListener('click', () => {
-      const statusEl = document.getElementById('status');
-      statusEl.style.color = '#d9534f';
-      statusEl.textContent = '';
-
-      auth.signInWithPopup(googleProvider)
-        .then(({ user }) => saveUserToFirestore(user).then(() => user))
-        .then(user => {
-          statusEl.style.color = '#2d7a2d';
-          statusEl.textContent = `Welcome, ${user.displayName}! Redirecting…`;
-          setTimeout(() => location.href = 'channels.html', 1200);
-        })
-        .catch(err => {
-          console.error(err);
-          statusEl.style.color = '#d9534f';
-          statusEl.textContent = err.message;
-        });
-    });
-
-    // AUTO‑REDIRECT & UPDATE IF ALREADY SIGNED IN
-    auth.onAuthStateChanged(user => {
-      if (user && user.emailVerified) {
-        saveUserToFirestore(user)
-          .finally(() => location.href = 'channels.html');
       }
+
+      // EMAIL SIGNUP
+      signupForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        authMessage.style.display='none';
+        const email = document.getElementById('signupEmail').value;
+        const pw = document.getElementById('signupPassword').value;
+        const conf = document.getElementById('signupConfirmPassword').value;
+        const un = usernameInput.value.trim();
+
+        if (pw!==conf) { showMessage('Passwords do not match','error'); return; }
+        const uv = validateUsername(un);
+        if (!uv.valid) { showMessage(uv.message,'error'); return; }
+        if (await checkUsernameExists(un)) { showMessage('Username taken','error'); return; }
+
+        try {
+          const { user } = await auth.createUserWithEmailAndPassword(email,pw);
+          await user.sendEmailVerification();
+          await saveUser(user, un, true);
+          verificationEmail.textContent = email;
+          verificationModal.style.display='flex';
+          showMessage('Created! Check your email to verify.','success');
+        } catch(err) { handleAuthError(err); }
+      });
+
+      // RESEND / CLOSE modal
+      resendVerificationBtn.onclick = async () => {
+        try { await auth.currentUser.sendEmailVerification(); showMessage('Verification email resent','success'); }
+        catch(err){ handleAuthError(err); }
+      };
+      closeModalBtn.onclick = () => {
+        verificationModal.style.display='none';
+        window.location.href='login.html';
+      };
+
+      // GOOGLE SIGNUP
+      googleSignupBtn.addEventListener('click', async () => {
+        authMessage.style.display='none';
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt:'select_account' });
+          const res = await auth.signInWithPopup(provider);
+          const user = res.user;
+          if (res.additionalUserInfo.isNewUser) {
+            let un = generateUsernameFromGoogle(user), base=un, i=1;
+            while (await checkUsernameExists(un)) {
+              un = (base+ i).slice(0,16); i++;
+            }
+            await saveUser(user, un, false);
+            showMessage('Account created! Redirecting…','success');
+          } else {
+            showMessage('Welcome back! Redirecting…','success');
+          }
+          setTimeout(()=> window.location.href='channels.html',1500);
+        } catch(err) { handleAuthError(err); }
+      });
+
+      // AUTH STATE & verification
+      auth.onAuthStateChanged(async user => {
+        if (user && user.emailVerified) {
+          await db.collection('users').doc(user.uid).update({ emailVerified:true, requiresVerification:false });
+          if (window.location.pathname.includes('signup.html')) {
+            showMessage('Email verified! Redirecting…','success');
+            setTimeout(()=> window.location.href='channels.html',1500);
+          }
+        }
+      });
+
+      // mark older accounts
+      (async ()=>{
+        const older = await db.collection('users').where('createdAt','<',new Date(VERIFICATION_REQUIREMENT_DATE)).get();
+        const batch = db.batch();
+        older.forEach(d=> batch.update(d.ref,{ requiresVerification:false, emailVerified:d.data().emailVerified!==undefined?d.data().emailVerified:true }));
+        await batch.commit();
+      })();
     });
   </script>
 </body>
