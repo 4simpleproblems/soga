@@ -147,7 +147,7 @@
           <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
         </div>
         <div class="nav-links">
-          <a href="channels.html">CHANNELS</a>
+          <a href="dashboard.html">DASHBOARD</a>
           <a href="messages.html">DIRECT MESSAGES</a>
           <a href="groups.html">GROUPS</a>
           <a href="discover.html">DISCOVER</a>
@@ -301,7 +301,7 @@
           const ok = await checkVerification(user);
           if(ok){
             showMessage('Logged in! Redirecting…','success');
-            setTimeout(()=>location.href='channels.html',1500);
+            setTimeout(()=>location.href='dashboard.html',1500);
           } else {
             await auth.signOut();
           }
@@ -343,7 +343,7 @@
             await db.collection('usernames').doc(un).set({uid:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
           }
           showMessage('Google login success! Redirecting…','success');
-          setTimeout(()=>location.href='channels.html',1500);
+          setTimeout(()=>location.href='dashboard.html',1250);
         }catch(err){ handleError(err); }
       });
 
