@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOGA | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #0f0f0f;
+      --text-color: #101827;
+      --bg-color: #f5f3ef;
+      --secondary-bg: #e9e5dc;
+      --accent-color: #ff7500;
+      --button-bg: #1a1a1a;
+      --orange-accent: #ff7500;
+      --sidebar-width: 240px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background-color:var(--bg-color);
+      color:var(--text-color);
+      line-height:1.6;
+      background-image:url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
+      background-attachment:fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+    header { padding:1.5rem 0; background-color:var(--bg-color); }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; }
+    .logo img { height:30px; }
+    .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
+
+    .nav-links { display:flex; gap:2rem; }
+    .nav-links a {
+      text-decoration:none; color:var(--text-color);
+      font-weight:500; font-size:0.9rem; letter-spacing:0.5px;
+      text-transform:uppercase; padding:8px 12px; border-radius:6px;
+      transition:all .3s ease;
+    }
+    .nav-links a:hover {
+      background-color:rgba(255,117,0,0.1);
+      color:var(--orange-accent);
+      transform:translateY(-2px);
+    }
+
+    .auth-buttons { display:flex; gap:1rem; }
+    .button {
+      display:inline-flex; align-items:center; justify-content:center;
+      background-color:var(--button-bg); color:white;
+      padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
+      text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
+    }
+     .button.logout {
+         background-color: var(--primary-color); /* Black background */
+         color: white;
+     }
+     .button.logout:hover {
+         background-color: #333; /* Slightly lighter black on hover */
+     }
+    .button:hover {
+      transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    }
+    .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
+    .button:hover .arrow:first-child { transform:translateX(-3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
+
+    .main-wrapper {
+      flex-grow: 1;
+      display: flex;
+      width: 100%;
+      max-width: 1200px; /* Still constrain overall width */
+      margin: 0 auto; /* Center the overall block */
+      padding-top: 40px; /* Keep top padding */
+      /* Removed horizontal padding */
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--secondary-bg);
+      padding: 2rem 0; /* Top/Bottom padding, no left/right padding here */
+      flex-shrink: 0;
+      border-top-right-radius: 12px; /* Rounded on right */
+      border-bottom-right-radius: 12px; /* Rounded on right */
+      margin-right: 2rem; /* Space between sidebar and dashboard content */
+      height: fit-content;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Add shadow for depth */
+      position: sticky; /* Make sidebar sticky */
+      top: 40px; /* Stick below the header padding */
+      align-self: flex-start; /* Align to the top */
+      /* Since main-wrapper has no left padding, sidebar will be flush left within it */
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 10px 2rem; /* Adjust padding for width */
+      padding-right: 1rem; /* Less padding on the right to blend */
+      border-top-right-radius: 6px; /* Rounded on right */
+      border-bottom-right-radius: 6px; /* Rounded on right */
+      transition: all 0.2s ease;
+      /* margin-left: 0; This is default for block elements, ensuring it starts from sidebar edge */
+    }
+
+    .sidebar-nav a.active {
+      background-color: rgba(255, 117, 0, 0.1); /* Orangish background */
+      color: var(--orange-accent); /* Orange text color */
+      border: 1px solid var(--orange-accent); /* Orange outline */
+      border-left: none; /* No border on the left to keep it flush */
+      pointer-events: none; /* Disable clicking on the active link */
+      font-weight: 700;
+    }
+
+    .dashboard-content {
+      flex-grow: 1;
+      padding: 2rem; /* Existing padding */
+      /* Ensure sufficient left padding next to the sidebar.
+         The 2rem padding here combined with the 2rem margin on the sidebar
+         creates the space. No extra padding-left needed. */
+      background-color: var(--secondary-bg);
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Add shadow for depth */
+    }
+     .dashboard-content h2 {
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+     }
+     .dashboard-content p {
+        font-size: 1rem;
+        color: #4b5563;
+        margin-bottom: 2rem;
+     }
+
+     /* Statistics Section */
+    .statistics {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .stat-card {
+        flex: 1;
+        background-color: var(--bg-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .stat-card h3 {
+        font-size: 1rem;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--orange-accent);
+        font-family: 'Roboto Mono', monospace;
+         /* Animation styles */
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+     /* Animation keyframes */
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+     .stat-value.friends { animation-delay: 0.2s; }
+     .stat-value.groups { animation-delay: 0.4s; }
+
+
+     footer { text-align:center;padding:20px;color:#666;font-size:14px; margin-top: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
+        </div>
+         <div class="nav-links">
+          <a href="channels.html">CHANNELS</a>
+          <a href="messages.html">DIRECT MESSAGES</a>
+          <a href="groups.html">GROUPS</a>
+          <a href="discover.html">DISCOVER</a>
+          <a href="help.html">HELP</a>
+        </div>
+        <div class="auth-buttons">
+          <a href="#" id="logoutButton" class="button logout"><span class="arrow">›</span> LOGOUT <span class="arrow">‹</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="dashboard.html" class="active">Dashboard</a></li>
+          <li><a href="chats.html">Chats</a></li>
+          <li><a href="friends.html">Friends</a></li>
+          <li><a href="groups.html">Groups</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <section class="dashboard-content">
+      <h2>Dashboard Overview</h2>
+      <p>Welcome to your dashboard. Here's a quick look at your activity.</p>
+
+       <div class="statistics">
+           <div class="stat-card">
+               <h3>Friends</h3>
+               <div class="stat-value friends" id="friendsCount">0</div>
+           </div>
+            <div class="stat-card">
+               <h3>Groups</h3>
+               <div class="stat-value groups" id="groupsCount">0</div>
+           </div>
+       </div>
+
+      </section>
+  </div>
+
+   <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+    © 2025 SOGA
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Firebase services
+       await new Promise(r => {
+        const iv = setInterval(() => {
+          if (firebase.apps.length) { clearInterval(iv); r(); }
+        }, 100);
+      });
+      const auth = firebase.auth();
+      const db = firebase.firestore(); // Get Firestore instance
+
+      const friendsCountElement = document.getElementById('friendsCount');
+      const groupsCountElement = document.getElementById('groupsCount');
+
+      // Function to animate counter
+      function animateCounter(element, start, end, duration) {
+          let startTime = null;
+
+          function step(timestamp) {
+              if (!startTime) startTime = timestamp;
+              const progress = Math.min((timestamp - startTime) / duration, 1);
+              element.textContent = Math.floor(progress * (end - start) + start);
+              if (progress < 1) {
+                  window.requestAnimationFrame(step);
+              }
+          }
+          window.requestAnimationFrame(step);
+      }
+
+      // Fetch and display statistics (simulated)
+      async function fetchAndDisplayStats(userId) {
+          // --- Replace with actual Firestore calls ---
+          // Example simulation:
+          const simulatedFriendsCount = Math.floor(Math.random() * 50) + 5; // Random number between 5 and 55
+          const simulatedGroupsCount = Math.floor(Math.random() * 15) + 1; // Random number between 1 and 16
+
+           // Replace with actual Firestore query for friends:
+           // try {
+           //    const friendsSnapshot = await db.collection('users').doc(userId).collection('friends').get();
+           //    const actualFriendsCount = friendsSnapshot.size;
+           //    animateCounter(friendsCountElement, 0, actualFriendsCount, 1000); // Animate over 1 second
+           // } catch (error) {
+           //    console.error("Error fetching friends:", error);
+           //    friendsCountElement.textContent = 'N/A';
+           // }
+
+           // Replace with actual Firestore query for groups:
+           // try {
+           //     const groupsSnapshot = await db.collection('users').doc(userId).collection('groups').get(); // Assuming groups are a subcollection
+           //     const actualGroupsCount = groupsSnapshot.size;
+           //     animateCounter(groupsCountElement, 0, actualGroupsCount, 1200); // Animate over 1.2 seconds
+           // } catch (error) {
+           //    console.error("Error fetching groups:", error);
+           //    groupsCountElement.textContent = 'N/A';
+           // }
+
+           // Using simulated data for now
+           animateCounter(friendsCountElement, 0, simulatedFriendsCount, 1000); // Animate over 1 second
+           animateCounter(groupsCountElement, 0, simulatedGroupsCount, 1200); // Animate over 1.2 seconds
+           // --- End Simulation ---
+      }
+
+
+      // Logout functionality
+      const logoutButton = document.getElementById('logoutButton');
+      logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          window.location.href = 'index.html'; // Redirect to index page after logout
+        } catch (error) {
+          console.error("Error logging out:", error);
+          // Optionally display an error message to the user
+        }
+      });
+
+      // Check auth state on dashboard load
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          // If user is not logged in, redirect to login page
+          window.location.href = 'login.html';
+        } else {
+          // User is logged in, fetch and display stats
+          fetchAndDisplayStats(user.uid);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
