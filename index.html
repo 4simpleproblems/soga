@@ -3,578 +3,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soga Chat</title>
-    <!-- Firebase SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-auth-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-firestore-compat.min.js"></script>
-    
-    <!-- Custom Firebase implementation -->
-    <script src="soga-firebase.js" defer></script>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>SOGA | Modern Chat Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #0f0f0f;
+            --text-color: #101827;
+            --bg-color: #f5f3ef;
+            --secondary-bg: #e9e5dc;
+            --accent-color: #ff7500;
+            --button-bg: #1a1a1a;
+            --orange-accent: #ff7500;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto Mono', monospace;
         }
         
         body {
-            background-color: #121212;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
+            background-attachment: fixed;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
+            padding: 0 2rem;
         }
         
         header {
-            background-color: #1a1a2e;
-            color: #4361ee;
-            padding: 15px 20px;
+            padding: 1.5rem 0;
+            background-color: var(--bg-color);
+        }
+        
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #3a86ff;
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #3a86ff;
-        }
-        
-        .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #e0e0e0;
         }
         
-        .user-info img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #3a86ff;
+        .logo-icon {
+            margin-right: 12px;
         }
         
-        .auth-container {
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .nav-links {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            gap: 20px;
+            gap: 2rem;
         }
         
-        .auth-card {
-            background-color: #1a1a2e;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid #3a86ff;
-        }
-        
-        .auth-card h2 {
-            margin-bottom: 20px;
-            text-align: center;
-            color: #3a86ff;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #e0e0e0;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            background-color: #16213e;
-            border: 1px solid #3a86ff;
-            border-radius: 4px;
-            font-size: 16px;
-            color: #e0e0e0;
-        }
-        
-        button {
-            background-color: #3a86ff;
-            color: #e0e0e0;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: background-color 0.3s;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        button:hover {
-            background-color: #4361ee;
-        }
-        
-        .auth-links {
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .auth-links a {
-            color: #3a86ff;
+        .nav-links a {
             text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
         
-        .auth-links a:hover {
-            text-decoration: underline;
+        .nav-links a:hover {
+            background-color: rgba(255, 117, 0, 0.1);
+            color: var(--orange-accent);
+            transform: translateY(-2px);
         }
         
-        .chat-container {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .chat-area {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background-color: #16213e;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+        .auth-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border: 1px solid #3a86ff;
+            gap: 1rem;
         }
         
-        .message {
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 70%;
-            word-break: break-word;
-        }
-        
-        .message-sent {
-            background-color: #3a86ff;
-            color: #e0e0e0;
-            align-self: flex-end;
-        }
-        
-        .message-received {
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-            align-self: flex-start;
-            border: 1px solid #3a86ff;
-        }
-        
-        .message-info {
-            font-size: 12px;
-            margin-bottom: 2px;
-            color: #3a86ff;
-        }
-        
-        .message-input {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .message-input input {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #3a86ff;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: #16213e;
-            color: #e0e0e0;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .message-input button {
-            width: auto;
-        }
-        
-        .user-list {
-            width: 250px;
-            background-color: #1a1a2e;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            margin-right: 20px;
-            border: 1px solid #3a86ff;
-        }
-        
-        .user-list h3 {
-            margin-bottom: 15px;
-            color: #3a86ff;
-            border-bottom: 1px solid #3a86ff;
-            padding-bottom: 8px;
-        }
-        
-        .user-item {
-            display: flex;
+        .button {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 0;
+            justify-content: center;
+            background-color: var(--button-bg);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .button.login {
+            background-color: transparent;
+            color: var(--button-bg);
+            border: 1px solid transparent;
+        }
+        
+        .button.signup {
+            background-color: var(--button-bg);
+        }
+        
+        .arrow {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .button:hover .arrow:first-child {
+            transform: translateX(-3px);
+        }
+        
+        .button:hover .arrow:last-child {
+            transform: translateX(3px);
+        }
+        
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .news-banner {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fff2e6;
+            padding: 0.5rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            border: 1px solid #ff7500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .news-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 117, 0, 0.15);
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-            color: #e0e0e0;
         }
         
-        .user-item:hover {
-            background-color: #16213e;
-            padding-left: 5px;
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .user-item img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid #3a86ff;
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #4b5563;
         }
         
-        .main-chat {
-            display: flex;
-            height: 100%;
-        }
-        
-        .chat-messages {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .loading {
+        .hero-buttons {
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 1rem;
+        }
+        
+        .background-globe {
+            position: absolute;
+            width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
         }
         
-        .spinner {
-            border: 4px solid rgba(58, 134, 255, 0.2);
+        .globe-circle {
+            position: absolute;
+            border: 1px solid #e0dcd4;
             border-radius: 50%;
-            border-top: 4px solid #3a86ff;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .globe-circle:nth-child(1) {
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
-        #signOutBtn {
-            background-color: #16213e;
-            color: #3a86ff;
-            border: 1px solid #3a86ff;
+        .globe-circle:nth-child(2) {
+            width: 900px;
+            height: 900px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
-        #signOutBtn:hover {
-            background-color: #3a86ff;
-            color: #16213e;
+        .globe-circle:nth-child(3) {
+            width: 1100px;
+            height: 1100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
-        @media (max-width: 768px) {
-            .main-chat {
-                flex-direction: column;
-            }
-            
-            .user-list {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
+        .globe-line {
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background-color: #e0dcd4;
+            top: 50%;
+            transform-origin: center;
+        }
+        
+        .globe-line:nth-child(4) {
+            transform: rotate(30deg);
+        }
+        
+        .globe-line:nth-child(5) {
+            transform: rotate(60deg);
+        }
+        
+        .globe-line:nth-child(6) {
+            transform: rotate(90deg);
+        }
+        
+        .globe-line:nth-child(7) {
+            transform: rotate(120deg);
+        }
+        
+        .globe-line:nth-child(8) {
+            transform: rotate(150deg);
+        }
+        
+        .chat-preview {
+            position: absolute;
+            bottom: -20px;
+            width: 120px;
+            height: 120px;
+            transition: all 0.4s ease;
+        }
+        
+        .chat-preview:hover {
+            transform: scale(1.1) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        
+        .chat-preview.left {
+            left: 180px;
+        }
+        
+        .chat-preview.right {
+            right: 180px;
+        }
+        
+        .chat-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">Soga Chat</div>
-        <div class="user-info" id="userInfo">
-            <span id="userName">Not signed in</span>
-            <button id="signOutBtn" style="display: none; width: auto; padding: 5px 10px; font-size: 14px;">Sign Out</button>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="logo.png" alt="SOGA Logo" height="30">
+                    <div class="logo-text">SOGA</div>
+                </div>
+                <div class="nav-links">
+                    <a href="#">CHANNELS</a>
+                    <a href="#">DIRECT MESSAGES</a>
+                    <a href="#">GROUPS</a>
+                    <a href="#">DISCOVER</a>
+                    <a href="#">HELP</a>
+                </div>
+                <div class="auth-buttons">
+                    <a href="#" class="button login"><span class="arrow">›</span> LOGIN <span class="arrow">‹</span></a>
+                    <a href="#" class="button signup"><span class="arrow">›</span> SIGN UP <span class="arrow">‹</span></a>
+                </div>
+            </nav>
         </div>
     </header>
-    
-    <div class="container">
-        <!-- Loading spinner -->
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-        </div>
-        
-        <!-- Authentication container -->
-        <div id="authContainer" class="auth-container" style="display: none;">
-            <!-- Sign In form -->
-            <div id="signInCard" class="auth-card">
-                <h2>Sign In to Soga</h2>
-                <form id="signInForm">
-                    <div class="form-group">
-                        <label for="signInEmail">Email</label>
-                        <input type="email" id="signInEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="signInPassword">Password</label>
-                        <input type="password" id="signInPassword" required>
-                    </div>
-                    <button type="submit">Sign In</button>
-                </form>
-                <div class="auth-links">
-                    <a href="#" id="goToSignUp">Don't have an account? Sign Up</a>
-                </div>
-            </div>
-            
-            <!-- Sign Up form -->
-            <div id="signUpCard" class="auth-card" style="display: none;">
-                <h2>Create Soga Account</h2>
-                <form id="signUpForm">
-                    <div class="form-group">
-                        <label for="signUpName">Display Name</label>
-                        <input type="text" id="signUpName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="signUpEmail">Email</label>
-                        <input type="email" id="signUpEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="signUpPassword">Password</label>
-                        <input type="password" id="signUpPassword" required>
-                    </div>
-                    <button type="submit">Sign Up</button>
-                </form>
-                <div class="auth-links">
-                    <a href="#" id="goToSignIn">Already have an account? Sign In</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chat container -->
-        <div id="chatContainer" class="chat-container" style="display: none;">
-            <div class="main-chat">
-                <!-- User list sidebar -->
-                <div class="user-list">
-                    <h3>Active Users</h3>
-                    <div id="usersList">
-                        <!-- User items will be added here -->
-                    </div>
-                </div>
-                
-                <!-- Chat messages area -->
-                <div class="chat-messages">
-                    <div id="chatArea" class="chat-area">
-                        <!-- Chat messages will be added here -->
-                    </div>
-                    
-                    <div class="message-input">
-                        <input type="text" id="messageInput" placeholder="Type a message...">
-                        <button id="sendMessageBtn">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        // DOM elements
-        const loadingElement = document.getElementById('loading');
-        const authContainer = document.getElementById('authContainer');
-        const chatContainer = document.getElementById('chatContainer');
-        const signInCard = document.getElementById('signInCard');
-        const signUpCard = document.getElementById('signUpCard');
-        const goToSignUpLink = document.getElementById('goToSignUp');
-        const goToSignInLink = document.getElementById('goToSignIn');
-        const signInForm = document.getElementById('signInForm');
-        const signUpForm = document.getElementById('signUpForm');
-        const userInfo = document.getElementById('userInfo');
-        const userName = document.getElementById('userName');
-        const signOutBtn = document.getElementById('signOutBtn');
-        const chatArea = document.getElementById('chatArea');
-        const messageInput = document.getElementById('messageInput');
-        const sendMessageBtn = document.getElementById('sendMessageBtn');
-        const usersList = document.getElementById('usersList');
+    <section class="hero">
+        <div class="background-globe">
+            <div class="globe-circle"></div>
+            <div class="globe-circle"></div>
+            <div class="globe-circle"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+        </div>
         
-        // Switch between sign in and sign up forms
-        goToSignUpLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            signInCard.style.display = 'none';
-            signUpCard.style.display = 'block';
-        });
-        
-        goToSignInLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            signUpCard.style.display = 'none';
-            signInCard.style.display = 'block';
-        });
-        
-        // Handle sign in form submission
-        signInForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signInEmail').value;
-            const password = document.getElementById('signInPassword').value;
-            
-            try {
-                await SogaFirebase.signIn(email, password);
-                // Auth state change listener will handle UI updates
-            } catch (error) {
-                alert(`Error signing in: ${error.message}`);
-            }
-        });
-        
-        // Handle sign up form submission
-        signUpForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signUpName').value;
-            const email = document.getElementById('signUpEmail').value;
-            const password = document.getElementById('signUpPassword').value;
-            
-            try {
-                await SogaFirebase.signUp(email, password, name);
-                // Auth state change listener will handle UI updates
-            } catch (error) {
-                alert(`Error signing up: ${error.message}`);
-            }
-        });
-        
-        // Handle sign out
-        signOutBtn.addEventListener('click', async () => {
-            try {
-                await SogaFirebase.signOut();
-                // Auth state change listener will handle UI updates
-            } catch (error) {
-                alert(`Error signing out: ${error.message}`);
-            }
-        });
-        
-        // Handle sending messages
-        sendMessageBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                SogaFirebase.sendMessage(message);
-                messageInput.value = '';
-            }
+        <div class="container">
+            <div class="news-banner" style="background-color: #fff2e6; border: 1px solid #ff7500;">
+                <span class="arrow" style="color: #ff7500;">›</span> NEWS: START CHATTING WITH FRIENDS INSTANTLY <span class="arrow" style="color: #ff7500;">‹</span>
+            </div>
+            <h1>CONNECT AND CHAT<br>INSTANTLY</h1>
+            <p>Connect with friends, colleagues, and communities through our modern chat platform - sign up with just email or Google in seconds</p>
+            <div class="hero-buttons">
+                <a href="#" class="button signup" style="background-color: #ff7500;"><span class="arrow">›</span> GET STARTED <span class="arrow">‹</span></a>
+                <a href="#" class="button login"><span class="arrow">›</span> LOGIN <span class="arrow">‹</span></a>
+            </div>
+        </div>
+    </section>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOGA | Modern Chat Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0f0f0f;
+            --text-color: #101827;
+            --bg-color: #f5f3ef;
+            --secondary-bg: #e9e5dc;
+            --accent-color: #ff7500;
+            --button-bg: #1a1a1a;
+            --orange-accent: #ff7500;
         }
         
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Firebase from soga-firebase.js
-            SogaFirebase.init();
-            
-            // Auth state change listener
-            SogaFirebase.onAuthStateChanged((user) => {
-                loadingElement.style.display = 'none';
-                
-                if (user) {
-                    // User is signed in
-                    authContainer.style.display = 'none';
-                    chatContainer.style.display = 'flex';
-                    userName.textContent = user.displayName || user.email;
-                    signOutBtn.style.display = 'block';
-                    
-                    // Start listening for messages
-                    SogaFirebase.listenForMessages((messages) => {
-                        renderMessages(messages);
-                    });
-                    
-                    // Start listening for users
-                    SogaFirebase.listenForUsers((users) => {
-                        renderUsers(users);
-                    });
-                } else {
-                    // User is signed out
-                    chatContainer.style.display = 'none';
-                    authContainer.style.display = 'flex';
-                    signInCard.style.display = 'block';
-                    signUpCard.style.display = 'none';
-                    userName.textContent = 'Not signed in';
-                    signOutBtn.style.display = 'none';
-                }
-            });
-        });
-        
-        // Render chat messages
-        function renderMessages(messages) {
-            chatArea.innerHTML = '';
-            const currentUserId = SogaFirebase.getCurrentUserId();
-            
-            messages.forEach(message => {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                
-                if (message.userId === currentUserId) {
-                    messageElement.classList.add('message-sent');
-                } else {
-                    messageElement.classList.add('message-received');
-                    
-                    const messageInfo = document.createElement('div');
-                    messageInfo.classList.add('message-info');
-                    messageInfo.textContent = message.userName || 'Anonymous';
-                    messageElement.appendChild(messageInfo);
-                }
-                
-                const messageText = document.createElement('div');
-                messageText.textContent = message.text;
-                messageElement.appendChild(messageText);
-                
-                chatArea.appendChild(messageElement);
-            });
-            
-            // Scroll to the bottom
-            chatArea.scrollTop = chatArea.scrollHeight;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        // Render users list
-        function renderUsers(users) {
-            usersList.innerHTML = '';
-            
-            users.forEach(user => {
-                const userElement = document.createElement('div');
-                userElement.classList.add('user-item');
-                
-                const userImg = document.createElement('img');
-                userImg.src = user.photoURL || 'https://via.placeholder.com/36';
-                userImg.alt = user.displayName || 'Anonymous';
-                userElement.appendChild(userImg);
-                
-                const userName = document.createElement('div');
-                userName.textContent = user.displayName || user.email || 'Anonymous';
-                userElement.appendChild(userName);
-                
-                usersList.appendChild(userElement);
-            });
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
+            background-attachment: fixed;
         }
-    </script>
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        header {
+            padding: 1.5rem 0;
+            background-color: var(--bg-color);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 117, 0, 0.1);
+            color: var(--orange-accent);
+            transform: translateY(-2px);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--button-bg);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .button.login {
+            background-color: transparent;
+            color: var(--button-bg);
+            border: 1px solid transparent;
+        }
+        
+        .button.signup {
+            background-color: var(--button-bg);
+        }
+        
+        .arrow {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .button:hover .arrow:first-child {
+            transform: translateX(-3px);
+        }
+        
+        .button:hover .arrow:last-child {
+            transform: translateX(3px);
+        }
+        
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .news-banner {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fff2e6;
+            padding: 0.5rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            border: 1px solid #ff7500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .news-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 117, 0, 0.15);
+            cursor: pointer;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #4b5563;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .background-globe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .globe-circle {
+            position: absolute;
+            border: 1px solid #e0dcd4;
+            border-radius: 50%;
+        }
+        
+        .globe-circle:nth-child(1) {
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .globe-circle:nth-child(2) {
+            width: 900px;
+            height: 900px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .globe-circle:nth-child(3) {
+            width: 1100px;
+            height: 1100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .globe-line {
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background-color: #e0dcd4;
+            top: 50%;
+            transform-origin: center;
+        }
+        
+        .globe-line:nth-child(4) {
+            transform: rotate(30deg);
+        }
+        
+        .globe-line:nth-child(5) {
+            transform: rotate(60deg);
+        }
+        
+        .globe-line:nth-child(6) {
+            transform: rotate(90deg);
+        }
+        
+        .globe-line:nth-child(7) {
+            transform: rotate(120deg);
+        }
+        
+        .globe-line:nth-child(8) {
+            transform: rotate(150deg);
+        }
+        
+        .chat-preview {
+            position: absolute;
+            bottom: -20px;
+            width: 120px;
+            height: 120px;
+            transition: all 0.4s ease;
+        }
+        
+        .chat-preview:hover {
+            transform: scale(1.1) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        
+        .chat-preview.left {
+            left: 180px;
+        }
+        
+        .chat-preview.right {
+            right: 180px;
+        }
+        
+        .chat-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="logo.png" alt="SOGA Logo" height="30">
+                    <div class="logo-text">SOGA</div>
+                </div>
+                <div class="nav-links">
+                    <a href="channels.html">CHANNELS</a>
+                    <a href="messages.html">DIRECT MESSAGES</a>
+                    <a href="groups.html">GROUPS</a>
+                    <a href="discover.html">DISCOVER</a>
+                    <a href="help.html">HELP</a>
+                </div>
+                <div class="auth-buttons">
+                    <a href="login.html" class="button login"><span class="arrow">›</span> LOGIN <span class="arrow">‹</span></a>
+                    <a href="signup.html" class="button signup"><span class="arrow">›</span> SIGN UP <span class="arrow">‹</span></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="background-globe">
+            <div class="globe-circle"></div>
+            <div class="globe-circle"></div>
+            <div class="globe-circle"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+            <div class="globe-line"></div>
+        </div>
+        
+        <div class="container">
+            <div class="news-banner" style="background-color: #fff2e6; border: 1px solid #ff7500;">
+                <span class="arrow" style="color: #ff7500;">›</span> NEWS: START CHATTING WITH FRIENDS INSTANTLY <span class="arrow" style="color: #ff7500;">‹</span>
+            </div>
+            <h1>CONNECT AND CHAT<br>INSTANTLY</h1>
+            <p>Connect with friends, colleagues, and communities through our modern chat platform - sign up with just email or Google in seconds</p>
+            <div class="hero-buttons">
+                <a href="signup.html" class="button signup" style="background-color: #ff7500;"><span class="arrow">›</span> GET STARTED <span class="arrow">‹</span></a>
+                <a href="login.html" class="button login"><span class="arrow">›</span> LOGIN <span class="arrow">‹</span></a>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
