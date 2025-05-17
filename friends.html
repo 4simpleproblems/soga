@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOGA | Friends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #0f0f0f;
+      --text-color: #101827;
+      --bg-color: #f5f3ef;
+      --secondary-bg: #e9e5dc;
+      --accent-color: #ff7500;
+      --button-bg: #1a1a1a;
+      --orange-accent: #ff7500;
+      --sidebar-width: 240px;
+      --header-height: calc(1.5rem * 2 + 30px); /* Approx. padding + logo height */
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background-color:var(--bg-color);
+      color:var(--text-color);
+      line-height:1.6;
+      background-image:url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
+      background-attachment:fixed;
+      min-height: 100vh;
+      display: flex; /* Use flexbox on body to align sidebar and main content area */
+    }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+
+    header { padding:1.5rem 0; background-color:var(--bg-color); flex-shrink: 0; }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; }
+    .logo img { height:30px; }
+    .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
+
+    .nav-links { display:flex; gap:2rem; }
+    .nav-links a {
+      text-decoration:none; color:var(--text-color);
+      font-weight:500; font-size:0.9rem; letter-spacing:0.5px;
+      text-transform:uppercase; padding:8px 12px; border-radius:6px;
+      transition:all .3s ease;
+    }
+    .nav-links a:hover {
+      background-color:rgba(255,117,0,0.1);
+      color:var(--orange-accent);
+      transform:translateY(-2px);
+    }
+
+    .auth-buttons { display:flex; gap:1rem; }
+    .button {
+      display:inline-flex; align-items:center; justify-content:center;
+      background-color:var(--button-bg); color:white;
+      padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
+      text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
+    }
+     .button.logout {
+         background-color: var(--primary-color);
+         color: white;
+     }
+     .button.logout:hover {
+         background-color: #333;
+     }
+    .button:hover {
+      transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    }
+    .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
+    .button:hover .arrow:first-child { transform:translateX(-3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
+
+    /* Main Content Area - pushed by the fixed sidebar */
+    .main-content-area {
+        flex-grow: 1; /* Allow this area to take the remaining width */
+        margin-left: var(--sidebar-width); /* Push content to the right of the fixed sidebar */
+        display: flex; /* Use flexbox for header, content, footer within this area */
+        flex-direction: column;
+        min-height: 100vh; /* Ensure it takes at least full viewport height */
+        padding: 0 2rem; /* Add padding to this area */
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--secondary-bg);
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      height: 100vh;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      overflow-y: auto;
+      padding-top: var(--header-height); /* Add space at the top for the header */
+    }
+
+    .sidebar-nav {
+        padding: 2rem 0;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 10px 0.5rem 10px 3rem; /* Adjusted padding for wider button with right blend */
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 66px;
+      transition: all 0.2s ease;
+      margin-left: 0;
+      width: calc(100% - 0.5rem);
+    }
+
+    .sidebar-nav a:hover:not(.active) {
+      background-color: rgba(255,117,0,0.1);
+      color: var(--orange-accent);
+    }
+
+    .sidebar-nav a.active {
+      background-color: rgba(255, 117, 0, 0.1);
+      color: var(--orange-accent);
+      border: 1px solid var(--orange-accent);
+      border-left: none;
+      pointer-events: none;
+      font-weight: 700;
+    }
+
+    /* Friends Specific Styles */
+    .friends-container {
+        margin-top: 40px; /* Space below header */
+        flex-grow: 1;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: var(--secondary-bg);
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        padding: 2rem;
+    }
+
+    .friends-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 1rem;
+    }
+
+    .friends-header h2 {
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+        color: var(--text-color);
+    }
+
+    .filter-buttons .button {
+        background-color: transparent;
+        color: var(--text-color);
+        padding: 8px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+     .filter-buttons .button:hover {
+        background-color: rgba(16, 24, 39, 0.05);
+     }
+
+    .filter-buttons .button.active {
+        background-color: var(--orange-accent);
+        color: white;
+    }
+     .filter-buttons .button.active:hover {
+         background-color: #e06a00;
+     }
+
+    .friends-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .friend-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .friend-item:last-child {
+        border-bottom: none;
+    }
+
+    .friend-item .username {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .friend-item .actions .button {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+    }
+
+     .friend-item .actions .button.chat {
+        background-color: var(--orange-accent);
+     }
+     .friend-item .actions .button.chat:hover {
+        background-color: #e06a00;
+     }
+
+     .friend-item .actions .button.remove {
+         background-color: #e53e3e;
+     }
+     .friend-item .actions .button.remove:hover {
+         background-color: #c53030;
+     }
+
+    footer {
+        text-align:center;
+        padding:20px;
+        color:#666;
+        font-size:14px;
+        margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="chats.html">Chats</a></li>
+        <li><a href="friends.html" class="active">Friends</a></li>
+        <li><a href="groups.html">Groups</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main-content-area">
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
+          </div>
+           <div class="nav-links">
+            <a href="channels.html">CHANNELS</a>
+            <a href="messages.html">DIRECT MESSAGES</a>
+            <a href="groups.html">GROUPS</a>
+            <a href="discover.html">DISCOVER</a>
+            <a href="help.html">HELP</a>
+          </div>
+          <div class="auth-buttons">
+            <a href="#" id="logoutButton" class="button logout"><span class="arrow">›</span> LOGOUT <span class="arrow">‹</span></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <div class="friends-container">
+        <div class="friends-header">
+            <h2>Your Connections</h2>
+            <div class="filter-buttons">
+                <button class="button active" data-filter="friends">Friends</button>
+                <button class="button" data-filter="following">Following</button>
+                <button class="button" data-filter="followers">Followers</button>
+            </div>
+        </div>
+
+        <ul class="friends-list" id="friendsList">
+            <p style="text-align: center;">Loading connections...</p>
+            </ul>
+    </div>
+
+     <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+      © 2025 SOGA
+    </footer>
+  </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Firebase services (ensure firebase.js is loaded first)
+       await new Promise(r => {
+        const iv = setInterval(() => {
+          if (firebase.apps.length) { clearInterval(iv); r(); }
+        }, 100);
+      });
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      const friendsListElement = document.getElementById('friendsList');
+      const filterButtons = document.querySelectorAll('.filter-buttons .button');
+
+      let currentUser = null;
+      let currentFilter = 'friends'; // Default filter
+
+      // Store fetched connections
+      let followingUsers = [];
+      let followerUsers = [];
+      let friendUsers = []; // Mutual follows
+
+      // Store fetched user data to avoid repeated lookups
+       const userDataCache = {};
+
+       // Function to get username from UID (checks cache first, then Firestore)
+       async function getUsername(uid) {
+           if (userDataCache[uid]) {
+               return userDataCache[uid].username;
+           }
+           try {
+               const doc = await db.collection('users').doc(uid).get();
+               if (doc.exists) {
+                   userDataCache[uid] = doc.data();
+                   return userDataCache[uid].username;
+               }
+               return 'Unknown User'; // Fallback
+           } catch (error) {
+               console.error("Error fetching user:", error);
+               return 'Error User'; // Fallback on error
+           }
+       }
+
+
+      // Function to fetch all connections
+      async function fetchConnections(userId) {
+          followingUsers = [];
+          followerUsers = [];
+          friendUsers = [];
+
+          try {
+              // Fetch users the current user is following
+              const followingSnapshot = await db.collection('users').doc(userId).collection('following').get();
+              const followingIds = followingSnapshot.docs.map(doc => doc.id);
+
+              // Fetch users who are following the current user
+               const followersSnapshot = await db.collection('users').doc(userId).collection('followers').get();
+               const followerIds = followersSnapshot.docs.map(doc => doc.id);
+
+
+              // Determine mutual friends (users in both following and followers lists)
+              const mutualFollowIds = followingIds.filter(id => followerIds.includes(id));
+
+               // Fetch user data for all relevant UIDs to populate cache
+               const allRelevantIds = new Set([...followingIds, ...followerIds, ...mutualFollowIds]);
+               for (const uid of allRelevantIds) {
+                   await getUsername(uid); // Populate cache
+               }
+
+               // Populate connection arrays with cached user data
+               followingUsers = followingIds.map(uid => ({ uid: uid, username: userDataCache[uid]?.username || 'Unknown User' }));
+               followerUsers = followerIds.map(uid => ({ uid: uid, username: userDataCache[uid]?.username || 'Unknown User' }));
+               friendUsers = mutualFollowIds.map(uid => ({ uid: uid, username: userDataCache[uid]?.username || 'Unknown User' }));
+
+
+          } catch (error) {
+              console.error("Error fetching connections:", error);
+               friendsListElement.innerHTML = '<p style="text-align: center;">Error loading connections.</p>';
+          }
+      }
+
+      // Function to display users based on the current filter
+      function displayUsers(users) {
+          friendsListElement.innerHTML = ''; // Clear current list
+           if (users.length === 0) {
+               let message = 'No connections found.';
+               if (currentFilter === 'following') message = 'You are not following anyone yet.';
+               else if (currentFilter === 'followers') message = 'No one is following you yet.';
+               else if (currentFilter === 'friends') message = 'No mutual friends yet. Start following people!';
+               friendsListElement.innerHTML = `<p style="text-align: center;">${message}</p>`;
+               return;
+           }
+
+          users.forEach(user => {
+              const friendItem = document.createElement('li');
+              friendItem.classList.add('friend-item');
+              friendItem.innerHTML = `
+                  <span class="username">${user.username}</span>
+                  <div class="actions">
+                      ${currentFilter === 'friends' ? `<button class="button chat" data-uid="${user.uid}">Chat</button>` : ''}
+                       ${currentFilter === 'following' ? `<button class="button remove" data-uid="${user.uid}">Unfollow</button>` : ''}
+                       ${currentFilter === 'followers' && !followingUsers.some(f => f.uid === user.uid) ? `<button class="button signup" data-uid="${user.uid}">Follow Back</button>` : ''}
+                  </div>
+              `;
+              friendsListElement.appendChild(friendItem);
+          });
+
+           // Add event listeners to action buttons after rendering
+           addActionButtonListeners();
+      }
+
+       // Function to add event listeners to buttons (like Chat)
+       function addActionButtonListeners() {
+           document.querySelectorAll('.friend-item .button.chat').forEach(button => {
+               button.addEventListener('click', handleChatButtonClick);
+           });
+            // Add listeners for Unfollow/Follow Back buttons here
+            document.querySelectorAll('.friend-item .button.remove').forEach(button => {
+               button.addEventListener('click', handleUnfollowButtonClick);
+           });
+           document.querySelectorAll('.friend-item .button.signup').forEach(button => { // Using .signup class for Follow Back button for styling
+               button.addEventListener('click', handleFollowBackButtonClick);
+           });
+       }
+
+
+       // Handler for Chat button click
+       async function handleChatButtonClick(event) {
+           const targetUserId = event.target.dataset.uid;
+            if (!currentUser || !targetUserId) return;
+
+            // Find or create a chat with this user
+            const chatQuery = await db.collection('chats')
+                                     .where('participants', 'array-contains', currentUser.uid)
+                                     .get();
+
+            let existingChatId = null;
+
+            chatQuery.docs.forEach(doc => {
+                const chat = doc.data();
+                 // Check if it's a direct message with the target user
+                if (!chat.isGroupChat && chat.participants.includes(targetUserId) && chat.participants.length === 2) {
+                    existingChatId = doc.id;
+                }
+            });
+
+            if (existingChatId) {
+                // Navigate to the existing chat
+                window.location.href = `chats.html#${existingChatId}`; // Pass chat ID in hash
+            } else {
+                // Create a new direct message chat
+                try {
+                    const newChatRef = await db.collection('chats').add({
+                        participants: [currentUser.uid, targetUserId],
+                        isGroupChat: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastMessageTimestamp: null, // No messages yet
+                        lastMessageText: ''
+                    });
+                    // Navigate to the new chat
+                    window.location.href = `chats.html#${newChatRef.id}`; // Pass new chat ID in hash
+                } catch (error) {
+                    console.error("Error creating chat:", error);
+                    // Display error to user
+                }
+            }
+       }
+
+        // Handler for Unfollow button click (Conceptual)
+        async function handleUnfollowButtonClick(event) {
+            const targetUserId = event.target.dataset.uid;
+            if (!currentUser || !targetUserId) return;
+
+            console.log(`Attempting to unfollow user: ${targetUserId}`);
+            // --- Implement actual Firestore unfollow logic here ---
+            try {
+                 // Remove target user from current user's 'following' subcollection
+                 await db.collection('users').doc(currentUser.uid).collection('following').doc(targetUserId).delete();
+
+                 // Remove current user from target user's 'followers' subcollection
+                 await db.collection('users').doc(targetUserId).collection('followers').doc(currentUser.uid).delete();
+
+                console.log(`Successfully unfollowed user: ${targetUserId}`);
+                 // Refresh the list after unfollow
+                 await fetchConnections(currentUser.uid);
+                 filterUsers(currentFilter); // Re-display current filter
+            } catch (error) {
+                console.error("Error unfollowing user:", error);
+                // Display error to user
+            }
+            // --- End Conceptual Unfollow ---
+        }
+
+        // Handler for Follow Back button click (Conceptual)
+         async function handleFollowBackButtonClick(event) {
+             const targetUserId = event.target.dataset.uid;
+             if (!currentUser || !targetUserId) return;
+
+             console.log(`Attempting to follow back user: ${targetUserId}`);
+            // --- Implement actual Firestore follow back logic here ---
+             try {
+                 // Add target user to current user's 'following' subcollection
+                 await db.collection('users').doc(currentUser.uid).collection('following').doc(targetUserId).set({
+                     followedAt: firebase.firestore.FieldValue.serverTimestamp()
+                 });
+
+                 // Add current user to target user's 'followers' subcollection
+                 await db.collection('users').doc(targetUserId).collection('followers').doc(currentUser.uid).set({
+                     followedAt: firebase.firestore.FieldValue.serverTimestamp()
+                 });
+
+                 console.log(`Successfully followed back user: ${targetUserId}`);
+                 // Refresh the list after follow back
+                 await fetchConnections(currentUser.uid);
+                 filterUsers(currentFilter); // Re-display current filter
+             } catch (error) {
+                 console.error("Error following back user:", error);
+                 // Display error to user
+             }
+             // --- End Conceptual Follow Back ---
+         }
+
+
+      // Function to filter and display users
+      function filterUsers(filter) {
+          currentFilter = filter;
+          filterButtons.forEach(button => {
+              button.classList.remove('active');
+              if (button.dataset.filter === filter) {
+                  button.classList.add('active');
+              }
+          });
+
+          switch (filter) {
+              case 'following':
+                  displayUsers(followingUsers);
+                  break;
+              case 'followers':
+                  displayUsers(followerUsers);
+                  break;
+              case 'friends':
+              default:
+                  displayUsers(friendUsers);
+                  break;
+          }
+      }
+
+      // Add event listeners for filter buttons
+      filterButtons.forEach(button => {
+          button.addEventListener('click', () => {
+              filterUsers(button.dataset.filter);
+          });
+      });
+
+
+      // Logout functionality
+      const logoutButton = document.getElementById('logoutButton');
+      logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          window.location.href = 'index.html'; // Redirect to index page after logout
+        } catch (error) {
+          console.error("Error logging out:", error);
+          // Optionally display an error message to the user
+        }
+      });
+
+      // Check auth state on page load
+      auth.onAuthStateChanged(async user => {
+        if (!user) {
+          // If user is not logged in, redirect to login page
+          window.location.href = 'login.html';
+        } else {
+          currentUser = user;
+          // User is logged in, fetch connections and display default filter (Friends)
+          await fetchConnections(currentUser.uid);
+          filterUsers(currentFilter); // Display friends list by default
+        }
+      });
+    });
+  </script>
+</body>
+</html>
