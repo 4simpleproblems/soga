@@ -138,10 +138,10 @@
           <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
         </div>
         <div class="nav-links">
-          <a href="channels.html">CHANNELS</a>
-          <a href="messages.html">DIRECT MESSAGES</a>
+          <a href="dashboard.html">DASHBOARD</a>
+          <a href="messages.html">MESSAGES</a>
           <a href="groups.html">GROUPS</a>
-          <a href="discover.html">DISCOVER</a>
+          <a href="friends.html">FRIENDS</a>
           <a href="help.html">HELP</a>
         </div>
         <div class="auth-buttons">
@@ -358,7 +358,7 @@
           } else {
             showMessage('Welcome back! Redirecting…','success');
           }
-          setTimeout(()=> window.location.href='channels.html',1500);
+          setTimeout(()=> window.location.href='dashboard.html',1500);
         } catch(err) { handleAuthError(err); }
       });
 
@@ -368,7 +368,7 @@
           await db.collection('users').doc(user.uid).update({ emailVerified:true, requiresVerification:false });
           if (window.location.pathname.includes('signup.html')) {
             showMessage('Email verified! Redirecting…','success');
-            setTimeout(()=> window.location.href='channels.html',1500);
+            setTimeout(()=> window.location.href='dashboard.html',1500);
           }
         }
       });
