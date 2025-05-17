@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOGA | Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #0f0f0f;
+      --text-color: #101827;
+      --bg-color: #f5f3ef;
+      --secondary-bg: #e9e5dc;
+      --accent-color: #ff7500;
+      --button-bg: #1a1a1a;
+      --orange-accent: #ff7500;
+    }
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      line-height: 1.6;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
+      background-attachment: fixed;
+    }
+    .container {
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 2rem;
+    }
+    header {
+      padding: 1.5rem 0; 
+      background-color: var(--bg-color);
+    }
+    nav {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+    }
+    .logo {
+      display: flex; 
+      align-items: center;
+    }
+    .logo-text {
+      font-weight: 800; 
+      font-size: 1.5rem; 
+      letter-spacing: -0.01em; 
+      margin-left: 0.5rem;
+    }
+    .nav-links {
+      display: flex; 
+      gap: 2rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+    .nav-links a:hover {
+      background-color: rgba(255, 117, 0, 0.1);
+      color: var(--orange-accent);
+      transform: translateY(-2px);
+    }
+    .auth-buttons {
+      display: flex; 
+      gap: 1rem;
+    }
+    .button {
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center;
+      background-color: var(--button-bg);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+    .button.login {
+      background-color: transparent;
+      color: var(--button-bg);
+      border: 1px solid transparent;
+    }
+    .button.signup {
+      background-color: var(--button-bg);
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .arrow {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .button:hover .arrow:first-child {
+      transform: translateX(-3px);
+    }
+    .button:hover .arrow:last-child {
+      transform: translateX(3px);
+    }
+    .hero {
+      padding: 8rem 0 6rem;
+      text-align: center;
+      position: relative;
+    }
+    .background-globe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .globe-circle {
+      position: absolute;
+      border: 1px solid #e0dcd4;
+      border-radius: 50%;
+    }
+    .globe-circle:nth-child(1) {
+      width: 700px;
+      height: 700px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .globe-circle:nth-child(2) {
+      width: 900px;
+      height: 900px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .globe-circle:nth-child(3) {
+      width: 1100px;
+      height: 1100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .globe-line {
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      background-color: #e0dcd4;
+      top: 50%;
+      transform-origin: center;
+    }
+    .globe-line:nth-child(4){ transform: rotate(30deg); }
+    .globe-line:nth-child(5){ transform: rotate(60deg); }
+    .globe-line:nth-child(6){ transform: rotate(90deg); }
+    .globe-line:nth-child(7){ transform: rotate(120deg); }
+    .globe-line:nth-child(8){ transform: rotate(150deg); }
+
+    /* Sign-up box */
+    .signup-box {
+      background: var(--secondary-bg);
+      margin: 0 auto;
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      max-width: 800px;
+      width: 100%;
+    }
+    .signup-left, .signup-right {
+      flex: 1;
+      padding: 2.5rem;
+      background: var(--secondary-bg);
+    }
+    .signup-left {
+      border-right: 1px solid #ccc;
+    }
+    .signup-left h1,
+    .signup-right h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.025em;
+      text-align: center;
+      color: var(--text-color);
+    }
+    .signup-left label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .signup-left input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+    .btn-form {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .btn-email {
+      background-color: var(--button-bg);
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .btn-email:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+    .signup-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .signup-right p.desc {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+      max-width: 220px;
+      line-height: 1.4;
+    }
+    .btn-google {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.8);
+      color: var(--primary-color);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    .btn-google:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .status {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #d9534f;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <img src="logo.png" alt="SOGA Logo" height="30">
+          <div class="logo-text">SOGA</div>
+        </div>
+        <div class="nav-links">
+          <a href="channels.html">CHANNELS</a>
+          <a href="messages.html">DIRECT MESSAGES</a>
+          <a href="groups.html">GROUPS</a>
+          <a href="discover.html">DISCOVER</a>
+          <a href="help.html">HELP</a>
+        </div>
+        <div class="auth-buttons">
+          <a href="login.html" class="button login"><span class="arrow">›</span> LOGIN <span class="arrow">‹</span></a>
+          <a href="signup.html" class="button signup"><span class="arrow">›</span> SIGN UP <span class="arrow">‹</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="background-globe">
+      <div class="globe-circle"></div>
+      <div class="globe-circle"></div>
+      <div class="globe-circle"></div>
+      <div class="globe-line"></div>
+      <div class="globe-line"></div>
+      <div class="globe-line"></div>
+      <div class="globe-line"></div>
+      <div class="globe-line"></div>
+    </div>
+    <div class="container">
+      <div class="signup-box">
+        <!-- Left: Email/Password Sign-Up -->
+        <div class="signup-left">
+          <h1>Create Account</h1>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="••••••••" required>
+          <button id="email-signup" class="btn-form btn-email">Sign up with Email</button>
+          <p id="status" class="status"></p>
+        </div>
+        <!-- Right: Google Sign-Up -->
+        <div class="signup-right">
+          <h1>Sign Up with Google</h1>
+          <p class="desc">Use your Google account to instantly create an account—no new password required.</p>
+          <button id="google-signup" class="btn-google">Sign Up with Google</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Firebase SDKs: App, Auth, Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Your firebase.js must initialize the app: firebase.initializeApp(firebaseConfig) -->
+  <script src="firebase.js"></script>
+  <script>
+    // Initialize Firebase services
+    const auth = firebase.auth();
+    const db   = firebase.firestore();
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    // Helper to save or update user in Firestore
+    function saveUserToFirestore(user) {
+      return db.collection('users').doc(user.uid).set({
+        email:     user.email,
+        name:      user.displayName || '',
+        provider:  user.providerData[0]?.providerId || 'password',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    }
+
+    // EMAIL SIGN-UP WITH VERIFICATION
+    document.getElementById('email-signup').addEventListener('click', () => {
+      const statusEl = document.getElementById('status');
+      statusEl.style.color = '#d9534f';
+      statusEl.textContent = '';
+
+      const email   = document.getElementById('email').value;
+      const pw      = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm-password').value;
+
+      if (pw !== confirm) {
+        statusEl.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, pw)
+        .then(({ user }) => {
+          // Send verification email
+          return user.sendEmailVerification()
+            .then(() => saveUserToFirestore(user))
+            .then(() => user);
+        })
+        .then(user => {
+          statusEl.style.color = '#2d7a2d';
+          statusEl.textContent =
+            `Account created! A verification email was sent to ${user.email}. ` +
+            `Please verify your email before logging in.`;
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.style.color = '#d9534f';
+          statusEl.textContent = err.message;
+        });
+    });
+
+    // GOOGLE SIGN-UP (no verification required)
+    document.getElementById('google-signup').addEventListener('click', () => {
+      const statusEl = document.getElementById('status');
+      statusEl.style.color = '#d9534f';
+      statusEl.textContent = '';
+
+      auth.signInWithPopup(googleProvider)
+        .then(({ user }) => saveUserToFirestore(user).then(() => user))
+        .then(user => {
+          statusEl.style.color = '#2d7a2d';
+          statusEl.textContent = `Welcome, ${user.displayName}! Redirecting…`;
+          setTimeout(() => location.href = 'channels.html', 1200);
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.style.color = '#d9534f';
+          statusEl.textContent = err.message;
+        });
+    });
+
+    // AUTO‑REDIRECT & UPDATE IF ALREADY SIGNED IN
+    auth.onAuthStateChanged(user => {
+      if (user && user.emailVerified) {
+        saveUserToFirestore(user)
+          .finally(() => location.href = 'channels.html');
+      }
+    });
+  </script>
+</body>
+</html>
