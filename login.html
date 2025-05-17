@@ -6,7 +6,7 @@
   <title>SOGA | Login</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --primary-color: #0f0f0f;
@@ -17,270 +17,126 @@
       --button-bg: #1a1a1a;
       --orange-accent: #ff7500;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      color: var(--text-color);
-      background-color: var(--bg-color);
-      line-height: 1.6;
-      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
-      background-attachment: fixed;
+      font-family:'Inter',sans-serif;
+      background-color:var(--bg-color);
+      color:var(--text-color);
+      line-height:1.6;
+      background-image:url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
+      background-attachment:fixed;
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    header {
-      padding: 1.5rem 0;
-      background-color: var(--bg-color);
-    }
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-    .logo-text {
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: -0.01em;
-      margin-left: 0.5rem;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+    header { padding:1.5rem 0; background-color:var(--bg-color); }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { display:flex; align-items:center; }
+    .logo img { height:30px; }
+    .logo-text { font-weight:800; font-size:1.5rem; letter-spacing:-0.01em; margin-left:0.5rem; }
+    .nav-links { display:flex; gap:2rem; }
     .nav-links a {
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      border-radius: 6px;
-      transition: all 0.3s ease;
+      text-decoration:none; color:var(--text-color);
+      font-weight:500; font-size:0.9rem; letter-spacing:0.5px;
+      text-transform:uppercase; padding:8px 12px; border-radius:6px;
+      transition:all .3s ease;
     }
     .nav-links a:hover {
-      background-color: rgba(255, 117, 0, 0.1);
-      color: var(--orange-accent);
-      transform: translateY(-2px);
+      background-color:rgba(255,117,0,0.1);
+      color:var(--orange-accent);
+      transform:translateY(-2px);
     }
-    .auth-buttons {
-      display: flex;
-      gap: 1rem;
-    }
+    .auth-buttons { display:flex; gap:1rem; }
     .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--button-bg);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.85rem;
-      letter-spacing: 0.5px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background-color:var(--button-bg); color:white;
+      padding:.6rem 1.2rem; border-radius:8px; font-weight:600;
+      text-decoration:none; transition:all .3s ease; font-size:.85rem; letter-spacing:.5px;
     }
-    .button.login {
-      background-color: transparent;
-      color: var(--button-bg);
-      border: 1px solid transparent;
-    }
-    .button.signup {
-      background-color: var(--button-bg);
-    }
+    .button.login { background:transparent; color:var(--button-bg); border:1px solid transparent; }
+    .button.signup { background-color:var(--button-bg); }
     .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.1);
     }
-    .arrow {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-      display: inline-block;
-      transition: transform 0.3s ease;
-    }
-    .button:hover .arrow:first-child {
-      transform: translateX(-3px);
-    }
-    .button:hover .arrow:last-child {
-      transform: translateX(3px);
-    }
+    .arrow { margin:0 .5rem; display:inline-block; transition:transform .3s ease; }
+    .button:hover .arrow:first-child { transform:translateX(-3px); }
+    .button:hover .arrow:last-child  { transform:translateX(3px); }
 
     .hero {
-      padding: 8rem 0 6rem;
-      text-align: center;
-      position: relative;
+      padding:8rem 0 6rem; text-align:center; position:relative;
     }
     .background-globe {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      opacity: 0.3;
-      pointer-events: none;
+      position:absolute; width:100%; height:100%; top:0; left:0; z-index:-1; opacity:0.3; pointer-events:none;
     }
-    .globe-circle {
-      position: absolute;
-      border: 1px solid #e0dcd4;
-      border-radius: 50%;
-    }
-    .globe-circle:nth-child(1) {
-      width: 700px;
-      height: 700px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-circle:nth-child(2) {
-      width: 900px;
-      height: 900px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-circle:nth-child(3) {
-      width: 1100px;
-      height: 1100px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .globe-line {
-      position: absolute;
-      height: 1px;
-      width: 100%;
-      background-color: #e0dcd4;
-      top: 50%;
-      transform-origin: center;
-    }
-    .globe-line:nth-child(4){transform:rotate(30deg);}
-    .globe-line:nth-child(5){transform:rotate(60deg);}
-    .globe-line:nth-child(6){transform:rotate(90deg);}
-    .globe-line:nth-child(7){transform:rotate(120deg);}
+    .globe-circle { position:absolute; border:1px solid #e0dcd4; border-radius:50%; }
+    .globe-circle:nth-child(1){width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-circle:nth-child(2){width:900px;height:900px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-circle:nth-child(3){width:1100px;height:1100px;top:50%;left:50%;transform:translate(-50%,-50%);}
+    .globe-line {position:absolute;height:1px;width:100%;background:#e0dcd4;top:50%;transform-origin:center;}
+    .globe-line:nth-child(4){transform:rotate(30deg);} .globe-line:nth-child(5){transform:rotate(60deg);}
+    .globe-line:nth-child(6){transform:rotate(90deg);} .globe-line:nth-child(7){transform:rotate(120deg);}
     .globe-line:nth-child(8){transform:rotate(150deg);}
 
-    .login-box {
-      background: var(--secondary-bg);
-      margin: 0 auto;
-      display: flex;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      max-width: 800px;
-      width: 100%;
+    .auth-container {
+      background:var(--secondary-bg);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 5px 15px rgba(0,0,0,0.05);
+      max-width:900px;
+      margin:40px auto;
     }
-    .login-left, .login-right {
-      flex: 1;
-      padding: 2.5rem;
-      background: var(--secondary-bg);
+    .login-title {
+      font-size:2rem; font-weight:900; margin-bottom:2rem; color:var(--text-color);
+      text-align:center;
     }
-    .login-left {
-      border-right: 1px solid #ccc;
+    #authMessage { display:none; padding:1rem 2.5rem; }
+    .message { padding:1rem; border-radius:8px; margin-bottom:1rem; }
+    .message.success { background:#d4edda; color:#155724; }
+    .message.error   { background:#f8d7da; color:#721c24; }
+    .split-layout { display:flex; min-height:500px; }
+    .auth-section { flex:1; padding:2.5rem; }
+    .email-section { border-right:1px solid #ccc; background:var(--secondary-bg); }
+    .social-section {
+      background:var(--secondary-bg); display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
     }
-    .login-left h1 {
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.025em;
-      text-align: center;
-      color: var(--text-color);
+    .auth-heading {
+      font-size:2rem; font-weight:900; text-transform:uppercase;
+      letter-spacing:-0.025em; margin-bottom:1rem; color:var(--text-color);
+      text-align:center;
     }
-    .login-left label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 500;
-      font-size: 0.9rem;
+    .auth-subheading {
+      color:#4b5563; margin-bottom:2rem; text-align:center;
     }
-    .login-left input {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 0.95rem;
+    .auth-form .form-group { margin-bottom:1.5rem; }
+    .auth-form input {
+      width:100%; padding:.8rem; border:1px solid #ccc; border-radius:6px;
+      font-size:.95rem; font-family:'Roboto Mono',monospace;
     }
-    .btn-form {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
+    .btn-primary {
+      width:100%; padding:.8rem; background-color:var(--button-bg);
+      color:white; border:none; border-radius:8px; font-weight:600;
+      cursor:pointer; transition:all .3s ease; font-size:.9rem;
     }
-    .btn-email {
-      background-color: var(--button-bg);
-      color: #fff;
-      margin-bottom: 1rem;
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.15); }
+    .google-auth {
+      display:inline-flex; align-items:center; justify-content:center;
+      background:#ffffff; border:1px solid rgba(255,255,255,0.8);
+      color:var(--primary-color); padding:.8rem 1.2rem; border-radius:8px;
+      font-weight:700; text-transform:uppercase; letter-spacing:-0.02em;
+      cursor:pointer; transition:all .3s ease; font-size:1rem; margin-bottom:1rem;
     }
-    .btn-email:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    .social-description { font-size:.85rem; color:#6b7280; max-width:80%; }
+    .auth-footer { text-align:center; margin-top:1rem; font-size:.9rem; }
+    .auth-footer a { color:var(--accent-color); text-decoration:none; }
+    .modal {
+      display:none; position:fixed; top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.7); z-index:1000; justify-content:center;align-items:center;
     }
-
-    .login-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    .modal-content {
+      background:white; padding:2rem; border-radius:8px;
+      max-width:500px; width:90%; text-align:center;
+      box-shadow:0 5px 15px rgba(0,0,0,0.3);
     }
-    .login-right h1 {
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.025em;
-      color: var(--text-color);
-    }
-    .login-right p.desc {
-      font-size: 0.85rem;
-      color: #6b7280;
-      margin-bottom: 1.5rem;
-      max-width: 220px;
-      line-height: 1.4;
-    }
-    .btn-google {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.8);
-      color: var(--primary-color);
-      padding: 0.8rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-    .btn-google:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .status {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #d9534f;
-    }
+    .modal-buttons { display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; }
   </style>
 </head>
 <body>
@@ -288,8 +144,7 @@
     <div class="container">
       <nav>
         <div class="logo">
-          <img src="logo.png" alt="SOGA Logo" height="30">
-          <div class="logo-text">SOGA</div>
+          <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
         </div>
         <div class="nav-links">
           <a href="channels.html">CHANNELS</a>
@@ -318,89 +173,195 @@
       <div class="globe-line"></div>
     </div>
     <div class="container">
-      <div class="login-box">
-        <!-- Left: Email/Password -->
-        <div class="login-left">
-          <h1>Sign In</h1>
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="you@example.com" required>
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="••••••••" required>
-          <button id="email-signin" class="btn-form btn-email">Sign in with Email</button>
-          <p id="status" class="status"></p>
-        </div>
-        <!-- Right: Google -->
-        <div class="login-right">
-          <h1>Sign In with Google</h1>
-          <p class="desc">Authenticate using your Google account for a seamless login — no new password needed.</p>
-          <button id="google-signin" class="btn-google">
-            Sign In with Google
-          </button>
+      <h1 class="login-title">LOGIN TO SOGA</h1>
+      <div id="authMessage"></div>
+      <div class="auth-container">
+        <div class="split-layout">
+          <!-- Email Login Section -->
+          <div class="auth-section email-section">
+            <h2 class="auth-heading">Sign in with Email</h2>
+            <p class="auth-subheading">Use your email to access your account</p>
+            <form id="loginForm" class="auth-form">
+              <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="Email" required autocomplete="username">
+              </div>
+              <div class="form-group">
+                <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password">
+              </div>
+              <button type="submit" class="btn-primary">Login</button>
+            </form>
+            <p class="auth-footer">Don't have an account? <a href="signup.html">Sign Up</a></p>
+            <p class="auth-footer">Forgot password? <a href="#" id="forgotPasswordLink">Reset</a></p>
+          </div>
+          <!-- Social Login Section -->
+          <div class="auth-section social-section">
+            <h2 class="auth-heading">Sign in with Google</h2>
+            <p class="auth-subheading">Securely login with Google</p>
+            <button id="googleLoginBtn" class="google-auth">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style="width:18px;height:18px;margin-right:10px;">
+              Sign in with Google
+            </button>
+            <p class="social-description">No extra password—just your Google account.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Firebase SDKs: App, Auth, Firestore -->
+  <!-- Verification Modal -->
+  <div id="verificationModal" class="modal">
+    <div class="modal-content">
+      <h2>Email Not Verified</h2>
+      <p>Please verify your email at <strong><span id="userEmail"></span></strong> before logging in.</p>
+      <div class="modal-buttons">
+        <button id="resendVerificationBtn" class="button signup">Resend Email</button>
+        <button id="closeModalBtn" class="button login">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+    © 2025 SOGA
+  </footer>
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Your firebase.js must call firebase.initializeApp(firebaseConfig) -->
   <script src="firebase.js"></script>
   <script>
-    // Initialize services
-    const auth = firebase.auth();
-    const db   = firebase.firestore();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Wait for Firebase init
+      await new Promise(r => {
+        const iv = setInterval(() => {
+          if (firebase.apps.length) { clearInterval(iv); r(); }
+        }, 100);
+      });
+      const auth = firebase.auth(), db = firebase.firestore();
+      const VERIF_CUTOFF = new Date('2025-05-09').getTime();
 
-    // Helper to save/update user in Firestore
-    function saveUserToFirestore(user) {
-      return db.collection('users').doc(user.uid).set({
-        email:     user.email,
-        name:      user.displayName || '',
-        provider:  (user.providerData[0] && user.providerData[0].providerId) || 'password',
-        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
+      // Elements
+      const loginForm = document.getElementById('loginForm');
+      const authMessage = document.getElementById('authMessage');
+      const forgotLink = document.getElementById('forgotPasswordLink');
+      const googleBtn = document.getElementById('googleLoginBtn');
+      const modal = document.getElementById('verificationModal');
+      const userEmailSpan = document.getElementById('userEmail');
+      const resendBtn = document.getElementById('resendVerificationBtn');
+      const closeBtn = document.getElementById('closeModalBtn');
+      let currentUser = null;
 
-    // Email/Password sign-in
-    document.getElementById('email-signin').addEventListener('click', () => {
-      const email = document.getElementById('email').value;
-      const pw    = document.getElementById('password').value;
-      auth.signInWithEmailAndPassword(email, pw)
-        .then(({ user }) => saveUserToFirestore(user).then(() => user))
-        .then(user => {
-          document.getElementById('status').textContent =
-            `Welcome back, ${user.email}! Redirecting…`;
-          setTimeout(() => location.href = 'channels.html', 1200);
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('status').textContent = err.message;
-        });
-    });
-
-    // Google popup sign-in
-    document.getElementById('google-signin').addEventListener('click', () => {
-      auth.signInWithPopup(googleProvider)
-        .then(({ user }) => saveUserToFirestore(user).then(() => user))
-        .then(user => {
-          document.getElementById('status').textContent =
-            `Hello, ${user.displayName}! Redirecting…`;
-          setTimeout(() => location.href = 'channels.html', 1200);
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('status').textContent = err.message;
-        });
-    });
-
-    // Auto-redirect & Firestore write if already signed in
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        saveUserToFirestore(user)
-          .finally(() => location.href = 'channels.html');
+      function showMessage(msg,type){
+        authMessage.innerHTML = `<div class="message ${type}">${msg}</div>`;
+        authMessage.style.display='block';
+        authMessage.scrollIntoView({behavior:'smooth'});
       }
+      function handleError(err){
+        let m=err.message;
+        if(err.code==='auth/user-not-found') m='No account for that email.';
+        else if(err.code==='auth/wrong-password') m='Wrong password.';
+        else if(err.code==='auth/invalid-email') m='Invalid email address.';
+        else if(err.code==='auth/too-many-requests') m='Too many attempts. Try later.';
+        showMessage(m,'error');
+      }
+      async function checkVerification(user){
+        const doc = await db.collection('users').doc(user.uid).get();
+        if(!doc.exists){
+          await auth.signOut();
+          showMessage('Account data missing.','error');
+          return false;
+        }
+        const data = doc.data();
+        if(data.requiresVerification===false) return true;
+        if(data.requiresVerification===undefined){
+          const created = data.createdAt?.toDate().getTime()||0;
+          if(created<VERIF_CUTOFF){
+            await db.collection('users').doc(user.uid).update({requiresVerification:false});
+            return true;
+          }
+        }
+        if(user.emailVerified){
+          await db.collection('users').doc(user.uid).update({emailVerified:true,requiresVerification:false});
+          return true;
+        }
+        userEmailSpan.textContent = user.email;
+        modal.style.display='flex';
+        return false;
+      }
+
+      // Email login
+      loginForm.addEventListener('submit', async e=>{
+        e.preventDefault();
+        authMessage.style.display='none';
+        const email=document.getElementById('loginEmail').value;
+        const pw=document.getElementById('loginPassword').value;
+        try{
+          const {user} = await auth.signInWithEmailAndPassword(email,pw);
+          currentUser=user;
+          const ok = await checkVerification(user);
+          if(ok){
+            showMessage('Logged in! Redirecting…','success');
+            setTimeout(()=>location.href='channels.html',1500);
+          } else {
+            await auth.signOut();
+          }
+        }catch(err){ handleError(err); }
+      });
+
+      // Forgot password
+      forgotLink.addEventListener('click', async e=>{
+        e.preventDefault();
+        const email=document.getElementById('loginEmail').value;
+        if(!email){ showMessage('Enter your email first.','warning'); return; }
+        try{
+          await auth.sendPasswordResetEmail(email);
+          showMessage('Reset link sent.','success');
+        }catch(err){ handleError(err); }
+      });
+
+      // Google login
+      googleBtn.addEventListener('click', async ()=>{
+        authMessage.style.display='none';
+        try{
+          const prov=new firebase.auth.GoogleAuthProvider();
+          prov.setCustomParameters({prompt:'select_account'});
+          const res=await auth.signInWithPopup(prov);
+          const user=res.user;
+          if(res.additionalUserInfo.isNewUser){
+            // generate username & save as in signup
+            let base=(user.displayName||user.email.split('@')[0]).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+            if(base.length<4) base+= '0000'.slice(0,4-base.length);
+            if(base.length>16) base=base.slice(0,16);
+            let un=base, i=1;
+            while((await db.collection('usernames').doc(un).get()).exists){
+              un=(base+ i).slice(0,16); i++;
+            }
+            await db.collection('users').doc(user.uid).set({
+              username:un,email:user.email,emailVerified:true,requiresVerification:false,
+              createdAt:firebase.firestore.FieldValue.serverTimestamp()
+            });
+            await db.collection('usernames').doc(un).set({uid:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+          }
+          showMessage('Google login success! Redirecting…','success');
+          setTimeout(()=>location.href='channels.html',1500);
+        }catch(err){ handleError(err); }
+      });
+
+      // Modal actions
+      resendBtn.onclick = async ()=>{
+        if(currentUser){
+          try{ await currentUser.sendEmailVerification(); showMessage('Verification email resent','success'); }
+          catch(e){ handleError(e); }
+        } else showMessage('Sign in again to resend.','warning');
+      };
+      closeBtn.onclick = ()=> modal.style.display='none';
+
+      // Auth state update
+      auth.onAuthStateChanged(async u=>{
+        if(u && u.emailVerified){
+          await db.collection('users').doc(u.uid).update({emailVerified:true,requiresVerification:false});
+        }
+      });
     });
   </script>
 </body>
