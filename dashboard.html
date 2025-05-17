@@ -17,6 +17,7 @@
       --button-bg: #1a1a1a;
       --orange-accent: #ff7500;
       --sidebar-width: 240px;
+       --header-height: calc(1.5rem * 2 + 30px); /* Approx. padding + logo height */
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -27,11 +28,11 @@
       background-image:url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M100 0 L0 0 0 100' fill='none' stroke='%23e0dcd4' stroke-width='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E");
       background-attachment:fixed;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      display: flex; /* Use flexbox on body to align sidebar and main content area */
     }
     .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
-    header { padding:1.5rem 0; background-color:var(--bg-color); }
+
+    header { padding:1.5rem 0; background-color:var(--bg-color); flex-shrink: 0; /* Prevent header from shrinking */ }
     nav { display:flex; justify-content:space-between; align-items:center; }
     .logo { display:flex; align-items:center; }
     .logo img { height:30px; }
@@ -71,30 +72,35 @@
     .button:hover .arrow:first-child { transform:translateX(-3px); }
     .button:hover .arrow:last-child  { transform:translateX(3px); }
 
-    .main-wrapper {
-      flex-grow: 1;
-      display: flex;
-      width: 100%;
-      max-width: 1200px; /* Still constrain overall width */
-      margin: 0 auto; /* Center the overall block */
-      padding-top: 40px; /* Keep top padding */
-      /* Removed horizontal padding */
+    /* Main Content Area - pushed by the fixed sidebar */
+    .main-content-area {
+        flex-grow: 1; /* Allow this area to take the remaining width */
+        margin-left: var(--sidebar-width); /* Push content to the right of the fixed sidebar */
+        display: flex; /* Use flexbox for header, content, footer within this area */
+        flex-direction: column;
+        min-height: 100vh; /* Ensure it takes at least full viewport height */
+         /* Add padding to this area */
+        padding: 0 2rem;
     }
 
     .sidebar {
       width: var(--sidebar-width);
       background-color: var(--secondary-bg);
-      padding: 2rem 0; /* Top/Bottom padding, no left/right padding here */
-      flex-shrink: 0;
-      border-top-right-radius: 12px; /* Rounded on right */
-      border-bottom-right-radius: 12px; /* Rounded on right */
-      margin-right: 2rem; /* Space between sidebar and dashboard content */
-      height: fit-content;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Add shadow for depth */
-      position: sticky; /* Make sidebar sticky */
-      top: 40px; /* Stick below the header padding */
-      align-self: flex-start; /* Align to the top */
-      /* Since main-wrapper has no left padding, sidebar will be flush left within it */
+      /* padding set within sidebar-nav a */
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      height: 100vh; /* Full viewport height */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: fixed; /* Fixed position relative to the viewport */
+      top: 0; /* Position at the very top */
+      left: 0; /* Position at the far left edge */
+      z-index: 100; /* Ensure sidebar is above other content */
+      overflow-y: auto; /* Add scrolling if content overflows */
+       padding-top: var(--header-height); /* Add space at the top for the header */
+    }
+
+    .sidebar-nav {
+        padding: 2rem 0; /* Top/Bottom padding for the navigation links container */
     }
 
     .sidebar-nav ul {
@@ -114,12 +120,19 @@
       font-size: 0.9rem;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      padding: 10px 2rem; /* Adjust padding for width */
-      padding-right: 1rem; /* Less padding on the right to blend */
+      padding: 10px 1rem 10px 3rem; /* Top, Right, Bottom, Left padding - increased left padding for wider button */
+       /* Adjust padding-right to bring it closer to the edge while keeping some blend space */
+      padding-right: 0.5rem;
       border-top-right-radius: 6px; /* Rounded on right */
       border-bottom-right-radius: 6px; /* Rounded on right */
       transition: all 0.2s ease;
-      /* margin-left: 0; This is default for block elements, ensuring it starts from sidebar edge */
+       margin-left: 0; /* Ensure it starts from the sidebar edge */
+       width: calc(14.5rem); /* Make button wider, leaving space for right blend */
+    }
+
+    .sidebar-nav a:hover:not(.active) {
+      background-color: rgba(255,117,0,0.1);
+      color: var(--orange-accent);
     }
 
     .sidebar-nav a.active {
@@ -132,14 +145,13 @@
     }
 
     .dashboard-content {
-      flex-grow: 1;
-      padding: 2rem; /* Existing padding */
-      /* Ensure sufficient left padding next to the sidebar.
-         The 2rem padding here combined with the 2rem margin on the sidebar
-         creates the space. No extra padding-left needed. */
+      flex-grow: 1; /* Allow content to take remaining vertical space */
+      padding: 2rem; /* Internal padding for the content block */
       background-color: var(--secondary-bg);
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Add shadow for depth */
+      max-width: 1200px; /* Limit content width */
+      margin: 40px auto 0 auto; /* Center the content block and add top margin */
     }
      .dashboard-content h2 {
         font-size: 2rem;
@@ -201,44 +213,51 @@
      .stat-value.groups { animation-delay: 0.4s; }
 
 
-     footer { text-align:center;padding:20px;color:#666;font-size:14px; margin-top: auto; }
+     footer {
+        text-align:center;
+        padding:20px;
+        color:#666;
+        font-size:14px;
+        margin-top: auto; /* Push footer to the bottom */
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo">
-          <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
-        </div>
-         <div class="nav-links">
-          <a href="channels.html">CHANNELS</a>
-          <a href="messages.html">DIRECT MESSAGES</a>
-          <a href="groups.html">GROUPS</a>
-          <a href="discover.html">DISCOVER</a>
-          <a href="help.html">HELP</a>
-        </div>
-        <div class="auth-buttons">
-          <a href="#" id="logoutButton" class="button logout"><span class="arrow">›</span> LOGOUT <span class="arrow">‹</span></a>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="chats.html">Chats</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="groups.html">Groups</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-  <div class="main-wrapper">
-    <aside class="sidebar">
-      <nav class="sidebar-nav">
-        <ul>
-          <li><a href="dashboard.html" class="active">Dashboard</a></li>
-          <li><a href="chats.html">Chats</a></li>
-          <li><a href="friends.html">Friends</a></li>
-          <li><a href="groups.html">Groups</a></li>
-          <li><a href="settings.html">Settings</a></li>
-        </ul>
-      </nav>
-    </aside>
+  <div class="main-content-area">
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <img src="logo.png" alt="SOGA Logo"><span class="logo-text">SOGA</span>
+          </div>
+           <div class="nav-links">
+            <a href="channels.html">CHANNELS</a>
+            <a href="messages.html">DIRECT MESSAGES</a>
+            <a href="groups.html">GROUPS</a>
+            <a href="discover.html">DISCOVER</a>
+            <a href="help.html">HELP</a>
+          </div>
+          <div class="auth-buttons">
+            <a href="#" id="logoutButton" class="button logout"><span class="arrow">›</span> LOGOUT <span class="arrow">‹</span></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
     <section class="dashboard-content">
-      <h2>Dashboard Overview</h2>
+      <h2>DASHBOARD OVERVIEW</h2>
       <p>Welcome to your dashboard. Here's a quick look at your activity.</p>
 
        <div class="statistics">
@@ -253,11 +272,12 @@
        </div>
 
       </section>
+
+     <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
+      © 2025 SOGA
+    </footer>
   </div>
 
-   <footer style="text-align:center;padding:20px;color:#666;font-size:14px;">
-    © 2025 SOGA
-  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
